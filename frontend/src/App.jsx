@@ -33,18 +33,233 @@
 // }
 
 // export default App
-import React from 'react'
+
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import Login from './pages/LoginPage';
+// import Register from './pages/Register';
+// import Dashboard from './pages/Dashboard';
+// import ProtectedRoute from './components/ProtectedRoute';
+
+// function App() {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/" element={<Register />} />
+//         <Route path="/dashboard" element={
+//           <ProtectedRoute>
+//             <Dashboard />
+//           </ProtectedRoute>
+//         } />
+//       </Routes>
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;
+
+// import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import LoginPage from "./pages/LoginPage";
+// import Register from "./pages/Register";
+// import Dashboard from "./pages/Dashboard";
+// import ProtectedRoute from "./components/ProtectedRoute";
+// import store from "./redux/store";
+// import { useDispatch } from "react-redux";
+// import React, { useEffect } from "react";
+
+// import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// import HomePage from './pages/HomePage';
+// import RegisterPage from './pages/Register';
+// import MainPage from './pages/MainPage';
+// import AdminPanel from './pages/AdminPanel';
+// import AuthRoute from './components/AuthRoute'; // Assuming this is a custom component
+// import api from './services/api';
+
+// function App() {
+//   const dispatch = useDispatch();
+
+//   // Check for existing token on app load
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       // Verify token with backend and get user info
+//       api.defaults.headers.common["Authorization"] = token;
+//       api
+//         .get("/me")
+//         .then((response) => {
+//           dispatch(
+//             loginSuccess({
+//               token,
+//               user: response.data,
+//             })
+//           );
+//         })
+//         .catch(() => {
+//           // Token is invalid, remove it
+//           localStorage.removeItem("token");
+//           delete api.defaults.headers.common["Authorization"];
+//         });
+//     }
+//   }, [dispatch]);
+
+//   return (
+//     <Router>
+//       <div className="App">
+//         <Routes>
+//           {/* Public Routes */}
+//           <Route
+//             path="/"
+//             element={
+//               <AuthRoute>
+//                 <HomePage />
+//               </AuthRoute>
+//             }
+//           />
+//           <Route
+//             path="/login"
+//             element={
+//               <AuthRoute>
+//                 <LoginPage />
+//               </AuthRoute>
+//             }
+//           />
+//           <Route
+//             path="/register"
+//             element={
+//               <AuthRoute>
+//                 <RegisterPage />
+//               </AuthRoute>
+//             }
+//           />
+
+//           {/* Protected Routes */}
+//           <Route
+//             path="/main"
+//             element={
+//               <ProtectedRoute>
+//                 <MainPage />
+//               </ProtectedRoute>
+//             }
+//           />
+//           <Route
+//             path="/admin"
+//             element={
+//               <ProtectedRoute adminOnly={true}>
+//                 <AdminPanel />
+//               </ProtectedRoute>
+//             }
+//           />
+
+//           {/* Fallback Route */}
+//           <Route path="*" element={<Navigate to="/" />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// }
+// export default App;
+
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
+import MainPage from "./pages/MainPage";
+import AdminPanel from "./pages/AdminPanel";
+import AuthRoute from "./components/AuthRoute";
+import { loginSuccess } from "./redux/userSlice"; // Import your action creator correctly
 
 function App() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-      
-          <div className="flex flex-col items-center justify-center min-h-screen ">
-      <h1 className="text-4xl font-bold text-green-900">zidio-dev</h1>
+  const dispatch = useDispatch();
 
-    </div>
-    </div>
-  )
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch("http://localhost:5000/api/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Token invalid or request failed");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          dispatch(loginSuccess({ token, user: data }));
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+        });
+    }
+  }, [dispatch]);
+
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          {/* Public Routes */}
+          <Route
+            path="/"
+            element={
+              <AuthRoute>
+                <HomePage />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <AuthRoute>
+                <LoginPage />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <AuthRoute>
+                <RegisterPage />
+              </AuthRoute>
+            }
+          />
+
+          {/* Protected Routes */}
+          <Route
+            path="/main"
+            element={
+              <ProtectedRoute>
+                <MainPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminPanel />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback Route */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
