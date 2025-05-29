@@ -178,6 +178,13 @@ import AdminPanel from "./pages/AdminPanel";
 import AuthRoute from "./components/AuthRoute";
 import { loginSuccess } from "./redux/userSlice"; // Import your action creator correctly
 
+
+
+import FileUpload from "./components/FileUpload";
+import ChartPage from "./pages/ChartPage";
+import HistoryPage from "./pages/HistoryPage";
+
+
 function App() {
   const dispatch = useDispatch();
 
@@ -256,6 +263,35 @@ function App() {
 
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/" />} />
+
+
+
+
+<Route
+  path="/upload"
+  element={
+    <ProtectedRoute>
+      <FileUpload />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/charts"
+  element={
+    <ProtectedRoute>
+      <ChartPage />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/history"
+  element={
+    <ProtectedRoute>
+      <HistoryPage />
+    </ProtectedRoute>
+  }
+/>
+          
         </Routes>
       </div>
     </Router>

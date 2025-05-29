@@ -15,6 +15,9 @@ app.use(express.json());
 // Routes
 const authRoutes = require('./routes/auth');
 app.use('/api', authRoutes);
+// Add these routes to your existing server.js
+app.use('/api/files', require('./routes/files'));
+app.use('/api/charts', require('./routes/charts'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
