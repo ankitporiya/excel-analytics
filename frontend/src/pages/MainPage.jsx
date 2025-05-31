@@ -192,22 +192,6 @@
 
 // export default MainPage;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // src/pages/MainPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -225,8 +209,6 @@ const MainPage = () => {
     navigate("/");
   };
 
-
-  
   return (
     <div
       className="min-h-screen"
@@ -402,25 +384,51 @@ const MainPage = () => {
         </div> */}
 
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 mt-10 space-y-6">
-  <h1 className="text-3xl font-bold text-center text-[#5b6e74]"> Welcome to Excel Analytics Platform</h1>
-  <p className="text-lg text-gray-700 text-center">
-    Unlock insights from your Excel files with powerful data visualization and analytics tools.
-  </p>
+          <h1 className="text-3xl font-bold text-center text-[#5b6e74]">
+            {" "}
+            Welcome to Excel Analytics Platform
+          </h1>
+          <p className="text-lg text-gray-700 text-center">
+            Unlock insights from your Excel files with powerful data
+            visualization and analytics tools.
+          </p>
 
-  <div className="space-y-4">
-    <h2 className="text-2xl font-semibold text-[#5b6e74]">📈 What You Can Do</h2>
-    <ul className="list-disc list-inside space-y-2 text-gray-700">
-      <li>🔐 <strong>Secure Login:</strong> Register and access your personalized dashboard.</li>
-      <li>📤 <strong>Upload Excel Files:</strong> Easily upload <code>.xls</code> or <code>.xlsx</code> files.</li>
-      <li>📊 <strong>Visualize Data:</strong> Generate interactive 2D & 3D charts.</li>
-      <li>⚙️ <strong>Dynamic Axes Selection:</strong> Choose columns as X & Y axes on the fly.</li>
-      <li>🧠 <strong>Smart Insights (AI):</strong> Get automated summaries and suggestions (optional).</li>
-      <li>🕓 <strong>Track History:</strong> View all your uploads and analysis history.</li>
-      <li>📥 <strong>Download Charts:</strong> Export charts as PNG or PDF.</li>
-    </ul>
-  </div>
-</div>
-
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold text-[#5b6e74]">
+              📈 What You Can Do
+            </h2>
+            <ul className="list-disc list-inside space-y-2 text-gray-700">
+              <li>
+                🔐 <strong>Secure Login:</strong> Register and access your
+                personalized dashboard.
+              </li>
+              <li>
+                📤 <strong>Upload Excel Files:</strong> Easily upload{" "}
+                <code>.xls</code> or <code>.xlsx</code> files.
+              </li>
+              <li>
+                📊 <strong>Visualize Data:</strong> Generate interactive 2D & 3D
+                charts.
+              </li>
+              <li>
+                ⚙️ <strong>Dynamic Axes Selection:</strong> Choose columns as X
+                & Y axes on the fly.
+              </li>
+              <li>
+                🧠 <strong>Smart Insights (AI):</strong> Get automated summaries
+                and suggestions (optional).
+              </li>
+              <li>
+                🕓 <strong>Track History:</strong> View all your uploads and
+                analysis history.
+              </li>
+              <li>
+                📥 <strong>Download Charts:</strong> Export charts as PNG or
+                PDF.
+              </li>
+            </ul>
+          </div>
+        </div>
       </main>
     </div>
   );
