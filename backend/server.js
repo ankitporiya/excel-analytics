@@ -19,6 +19,9 @@ app.use('/api', authRoutes);
 app.use('/api/files', require('./routes/files'));
 app.use('/api/charts', require('./routes/charts'));
 
+
+
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
