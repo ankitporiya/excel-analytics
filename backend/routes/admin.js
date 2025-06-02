@@ -25,4 +25,12 @@ router.delete('/files/:fileId', auth, isAdmin, adminController.deleteFile);
 // Storage usage
 router.get('/storage', auth, isAdmin, adminController.getStorageUsage);
 
+
+///////////////////////////////////////////
+// // Chart management
+// router.get('/charts/stats', auth, isAdmin, adminController.getChartStats);
+// router.get('/charts', auth, isAdmin, adminController.getAllCharts);
+// router.get('/charts/:chartId', auth, isAdmin, adminController.getChartById);
+// router.delete('/charts/:chartId', auth, isAdmin, adminController.deleteChart);
+
 module.exports = router;

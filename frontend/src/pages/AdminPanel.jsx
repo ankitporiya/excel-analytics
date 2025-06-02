@@ -317,6 +317,7 @@ import UserListModal from "../components/UserListModal";
 import FileListModal from "../components/FileListModal";
 import StorageModal from "../components/StorageModal";
 import StorageDisplay from "../components/StorageDisplay";
+// import ChartAnalysis from "../components/ChartAnalysis";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -665,6 +666,7 @@ const AdminPanel = () => {
       />
 
       <StorageDisplay></StorageDisplay>
+      {/* <ChartAnalysis></ChartAnalysis> */}
     </div>
   );
 };

@@ -121,3 +121,73 @@ export const getStorageUsage = async () => {
     throw error;
   }
 };
+
+
+
+// //////////////////////////////////////////////////////////////////////
+// export const getChartStats = async () => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/admin/charts/stats`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${token}`, // ✅ Important
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to fetch chart stats: ${response.status}`);
+//     }
+
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error fetching chart stats:', error);
+//     throw error;
+//   }
+// };
+
+// export const getAllCharts = async () => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/admin/charts`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to fetch charts: ${response.status}`);
+//     }
+
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error fetching charts:', error);
+//     throw error;
+//   }
+// };
+
+// export const deleteChart = async (chartId) => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/admin/charts/${chartId}`, {
+//       method: 'DELETE',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to delete chart: ${response.status}`);
+//     }
+
+//     // Return true for successful deletion, or the response data if API returns content
+//     const contentType = response.headers.get('content-type');
+//     if (contentType && contentType.includes('application/json')) {
+//       return await response.json();
+//     }
+    
+//     return true;
+//   } catch (error) {
+//     console.error('Error deleting chart:', error);
+//     throw error;
+//   }
+// };

@@ -4,6 +4,193 @@ const Chart = require('../models/Chart');
 const fs = require('fs');
 const path = require('path');
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Add these methods to your adminController.js file
+
+// // Get chart statistics
+// const getChartStats = async (req, res) => {
+//   try {
+//     const totalCharts = await Chart.countDocuments();
+    
+//     // Charts by type
+//     const chartsByType = await Chart.aggregate([
+//       {
+//         $group: {
+//           _id: '$chartType',
+//           count: { $sum: 1 }
+//         }
+//       }
+//     ]);
+
+//     // Charts created in the last 30 days
+//     const thirtyDaysAgo = new Date();
+//     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+//     const recentCharts = await Chart.countDocuments({
+//       createdDate: { $gte: thirtyDaysAgo }
+//     });
+
+//     // Most active users (by chart creation)
+//     const topUsers = await Chart.aggregate([
+//       {
+//         $group: {
+//           _id: '$userId',
+//           chartCount: { $sum: 1 }
+//         }
+//       },
+//       {
+//         $lookup: {
+//           from: 'users',
+//           localField: '_id',
+//           foreignField: '_id',
+//           as: 'user'
+//         }
+//       },
+//       {
+//         $unwind: '$user'
+//       },
+//       {
+//         $project: {
+//           userName: '$user.name',
+//           userEmail: '$user.email',
+//           chartCount: 1
+//         }
+//       },
+//       {
+//         $sort: { chartCount: -1 }
+//       },
+//       {
+//         $limit: 5
+//       }
+//     ]);
+
+//     // Charts created per month (last 6 months)
+//     const sixMonthsAgo = new Date();
+//     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+//     const chartsPerMonth = await Chart.aggregate([
+//       {
+//         $match: {
+//           createdDate: { $gte: sixMonthsAgo }
+//         }
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             year: { $year: '$createdDate' },
+//             month: { $month: '$createdDate' }
+//           },
+//           count: { $sum: 1 }
+//         }
+//       },
+//       {
+//         $sort: { '_id.year': 1, '_id.month': 1 }
+//       }
+//     ]);
+
+//     res.status(200).json({
+//       success: true,
+//       data: {
+//         totalCharts,
+//         chartsByType,
+//         recentCharts,
+//         topUsers,
+//         chartsPerMonth
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error fetching chart statistics:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch chart statistics'
+//     });
+//   }
+// };
+
+// // Get all charts
+// const getAllCharts = async (req, res) => {
+//   try {
+//     const charts = await Chart.find({})
+//       .populate('userId', 'name email')
+//       .populate('fileId', 'filename originalName uploadDate')
+//       .sort({ createdDate: -1 });
+
+//     res.status(200).json({
+//       success: true,
+//       data: charts
+//     });
+//   } catch (error) {
+//     console.error('Error fetching charts:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch charts data'
+//     });
+//   }
+// };
+
+// // Delete a chart
+// const deleteChart = async (req, res) => {
+//   try {
+//     const { chartId } = req.params;
+
+//     const chart = await Chart.findById(chartId);
+//     if (!chart) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Chart not found'
+//       });
+//     }
+
+//     await Chart.findByIdAndDelete(chartId);
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Chart deleted successfully'
+//     });
+//   } catch (error) {
+//     console.error('Error deleting chart:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to delete chart'
+//     });
+//   }
+// };
+
+// // Get chart details by ID
+// const getChartById = async (req, res) => {
+//   try {
+//     const { chartId } = req.params;
+
+//     const chart = await Chart.findById(chartId)
+//       .populate('userId', 'name email')
+//       .populate('fileId', 'filename originalName uploadDate');
+
+//     if (!chart) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Chart not found'
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       data: chart
+//     });
+//   } catch (error) {
+//     console.error('Error fetching chart:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch chart'
+//     });
+//   }
+// };
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Get dashboard statistics
 const getDashboardStats = async (req, res) => {
   try {
@@ -313,5 +500,11 @@ module.exports = {
   deleteUser,
   getAllFiles,
   deleteFile,
-  getStorageUsage
+  getStorageUsage,
+
+
+  //  getAllCharts,
+  // getChartStats,
+  // deleteChart,
+  // getChartById
 };
