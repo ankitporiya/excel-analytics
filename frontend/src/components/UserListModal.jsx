@@ -80,9 +80,9 @@ const UserListModal = ({ isOpen, onClose, onUserDeleted }) => {
                   <tr className="border-b" style={{ borderColor: "#bde8f1" }}>
                     <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Name</th>
                     <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Email</th>
-                    <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Joined</th>
-                    <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Last Login</th>
-                    <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Actions</th>
+                    {/* <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Joined</th>
+                    <th className="text-left py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Last Login</th> */}
+                    <th className="text-right py-3 px-4 font-semibold" style={{ color: "#0d0d0d" }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -90,13 +90,13 @@ const UserListModal = ({ isOpen, onClose, onUserDeleted }) => {
                     <tr key={user._id} className="border-b" style={{ borderColor: "#bde8f1" }}>
                       <td className="py-3 px-4" style={{ color: "#0d0d0d" }}>{user.name}</td>
                       <td className="py-3 px-4" style={{ color: "#819fa7" }}>{user.email}</td>
-                      <td className="py-3 px-4" style={{ color: "#819fa7" }}>
+                      {/* <td className="py-3 px-4" style={{ color: "#819fa7" }}>
                         {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                       <td className="py-3 px-4" style={{ color: "#819fa7" }}>
                         {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}
-                      </td>
-                      <td className="py-3 px-4">
+                      </td> */}
+                      <td className="py-3 px-4 text-right">
                         <button
                           onClick={() => handleDeleteUser(user._id, user.name)}
                           disabled={deleting === user._id}

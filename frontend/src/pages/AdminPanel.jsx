@@ -316,6 +316,7 @@ import { getDashboardStats } from "../utils/adminApi";
 import UserListModal from "../components/UserListModal";
 import FileListModal from "../components/FileListModal";
 import StorageModal from "../components/StorageModal";
+import StorageDisplay from "../components/StorageDisplay";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -538,7 +539,7 @@ const AdminPanel = () => {
                   View
                 </button>
               </div>
-              <div className="flex justify-between items-center py-3">
+              {/* <div className="flex justify-between items-center py-3">
                 <span style={{ color: "#819fa7" }}>User Activity</span>
                 <button
                   onClick={() => setShowUserModal(true)}
@@ -553,7 +554,7 @@ const AdminPanel = () => {
                 >
                   View
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -604,7 +605,7 @@ const AdminPanel = () => {
                   Monitor
                 </button>
               </div>
-              <div className="flex justify-between items-center py-3">
+              {/* <div className="flex justify-between items-center py-3">
                 <span style={{ color: "#819fa7" }}>System Analytics</span>
                 <button
                   className="px-3 py-1 rounded text-sm font-medium transition-colors duration-300"
@@ -618,7 +619,7 @@ const AdminPanel = () => {
                 >
                   View
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -662,6 +663,8 @@ const AdminPanel = () => {
         isOpen={showStorageModal}
         onClose={() => setShowStorageModal(false)}
       />
+
+      <StorageDisplay></StorageDisplay>
     </div>
   );
 };
