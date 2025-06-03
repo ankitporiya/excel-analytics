@@ -9,182 +9,473 @@ const path = require('path');
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// Add these methods to your adminController.js file
+// const Chart = require('../models/chart');
+// const User = require('../models/User');
+// const FileUpload = require('../models/FileUpload');
 
-// // Get chart statistics
-// const getChartStats = async (req, res) => {
+// Get comprehensive chart statistics
+const getChartStats = async (req, res) => {
+  try {
+    // Total charts count
+    const totalCharts = await Chart.countDocuments();
+
+    // Recent charts (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentCharts = await Chart.countDocuments({
+      createdDate: { $gte: thirtyDaysAgo }
+    });
+
+    // Charts grouped by type
+    const chartsByType = await Chart.aggregate([
+      {
+        $group: {
+          _id: '$chartType',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { count: -1 }
+      }
+    ]);
+
+    // Top users by chart count
+    const topUsers = await Chart.aggregate([
+      {
+        $group: {
+          _id: '$userId',
+          chartCount: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { chartCount: -1 }
+      },
+      {
+        $limit: 10
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'userInfo'
+        }
+      },
+      {
+        $unwind: '$userInfo'
+      },
+      {
+        $project: {
+          _id: 1,
+          chartCount: 1,
+          userName: '$userInfo.name',
+          userEmail: '$userInfo.email'
+        }
+      }
+    ]);
+
+    // Charts created over time (last 7 days)
+    const chartTrends = await Chart.aggregate([
+      {
+        $match: {
+          createdDate: {
+            $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$createdDate'
+            }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { '_id': 1 }
+      }
+    ]);
+
+    const stats = {
+      totalCharts,
+      recentCharts,
+      chartsByType,
+      topUsers,
+      chartTrends
+    };
+
+    res.status(200).json({
+      success: true,
+      data: stats
+    });
+
+  } catch (error) {
+    console.error('Error fetching chart stats:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch chart statistics',
+      error: error.message
+    });
+  }
+};
+
+// Get all charts with pagination and filtering
+const getAllCharts = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 50,
+      chartType,
+      userId,
+      sortBy = 'createdDate',
+      sortOrder = 'desc',
+      search
+    } = req.query;
+
+    // Build filter object
+    const filter = {};
+    
+    if (chartType && chartType !== 'all') {
+      filter.chartType = chartType;
+    }
+    
+    if (userId) {
+      filter.userId = userId;
+    }
+
+    if (search) {
+      filter.$or = [
+        { chartName: { $regex: search, $options: 'i' } },
+        { xAxis: { $regex: search, $options: 'i' } },
+        { yAxis: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Calculate pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const sortObj = {};
+    sortObj[sortBy] = sortOrder === 'desc' ? -1 : 1;
+
+    // Get charts with user and file information
+    const charts = await Chart.find(filter)
+      .populate('userId', 'name email')
+      .populate('fileId', 'originalName uploadDate fileType fileSize')
+      .sort(sortObj)
+      .skip(skip)
+      .limit(parseInt(limit))
+      .lean();
+
+    // Get total count for pagination
+    const totalCharts = await Chart.countDocuments(filter);
+    const totalPages = Math.ceil(totalCharts / parseInt(limit));
+
+    res.status(200).json({
+      success: true,
+      data: {
+        charts,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages,
+          totalCharts,
+          hasNext: parseInt(page) < totalPages,
+          hasPrev: parseInt(page) > 1
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching charts:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch charts',
+      error: error.message
+    });
+  }
+};
+
+// Get chart by ID with full details
+const getChartById = async (req, res) => {
+  try {
+    const { chartId } = req.params;
+
+    const chart = await Chart.findById(chartId)
+      .populate('userId', 'name email createdAt')
+      .populate('fileId', 'originalName uploadDate fileType fileSize filePath')
+      .lean();
+
+    if (!chart) {
+      return res.status(404).json({
+        success: false,
+        message: 'Chart not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: chart
+    });
+
+  } catch (error) {
+    console.error('Error fetching chart:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch chart details',
+      error: error.message
+    });
+  }
+};
+
+// Delete chart by ID
+const deleteChart = async (req, res) => {
+  try {
+    const { chartId } = req.params;
+
+    // Check if chart exists
+    const chart = await Chart.findById(chartId);
+    if (!chart) {
+      return res.status(404).json({
+        success: false,
+        message: 'Chart not found'
+      });
+    }
+
+    // Delete the chart
+    await Chart.findByIdAndDelete(chartId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Chart deleted successfully',
+      data: { deletedChartId: chartId }
+    });
+
+  } catch (error) {
+    console.error('Error deleting chart:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete chart',
+      error: error.message
+    });
+  }
+};
+
+// Bulk delete charts
+const bulkDeleteCharts = async (req, res) => {
+  try {
+    const { chartIds } = req.body;
+
+    if (!chartIds || !Array.isArray(chartIds) || chartIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide valid chart IDs array'
+      });
+    }
+
+    // Delete multiple charts
+    const result = await Chart.deleteMany({
+      _id: { $in: chartIds }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `Successfully deleted ${result.deletedCount} charts`,
+      data: { deletedCount: result.deletedCount }
+    });
+
+  } catch (error) {
+    console.error('Error bulk deleting charts:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete charts',
+      error: error.message
+    });
+  }
+};
+
+// Get dashboard overview
+const getDashboardOverview = async (req, res) => {
+  try {
+    const today = new Date();
+    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const [
+      totalCharts,
+      totalUsers,
+      chartsToday,
+      chartsThisWeek,
+      chartsThisMonth,
+      recentActivity
+    ] = await Promise.all([
+      Chart.countDocuments(),
+      User.countDocuments(),
+      Chart.countDocuments({ createdDate: { $gte: startOfDay } }),
+      Chart.countDocuments({ createdDate: { $gte: startOfWeek } }),
+      Chart.countDocuments({ createdDate: { $gte: startOfMonth } }),
+      Chart.find()
+        .populate('userId', 'name email')
+        .populate('fileId', 'originalName')
+        .sort({ createdDate: -1 })
+        .limit(10)
+        .lean()
+    ]);
+
+    const overview = {
+      totalCharts,
+      totalUsers,
+      chartsToday,
+      chartsThisWeek,
+      chartsThisMonth,
+      recentActivity
+    };
+
+    res.status(200).json({
+      success: true,
+      data: overview
+    });
+
+  } catch (error) {
+    console.error('Error fetching dashboard overview:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch dashboard overview',
+      error: error.message
+    });
+  }
+};
+
+
+
+
+
+
+
+// // // Replace your exportCharts function with this debug version temporarily
+// const exportCharts = async (req, res) => {
 //   try {
-//     const totalCharts = await Chart.countDocuments();
+//     const { format = 'json', chartIds } = req.query;
     
-//     // Charts by type
-//     const chartsByType = await Chart.aggregate([
-//       {
-//         $group: {
-//           _id: '$chartType',
-//           count: { $sum: 1 }
-//         }
+//     // Build filter based on chartIds if provided
+//     let filter = {};
+//     if (chartIds && chartIds.trim()) {
+//       const ids = chartIds.split(',').map(id => id.trim()).filter(id => id);
+      
+//       // Validate ObjectIds
+//       const validIds = ids.filter(id => mongoose.Types.ObjectId.isValid(id));
+//       const invalidIds = ids.filter(id => !mongoose.Types.ObjectId.isValid(id));
+      
+//       if (invalidIds.length > 0) {
+//         return res.status(400).json({
+//           success: false,
+//           message: 'Invalid chart IDs provided',
+//           invalidIds
+//         });
 //       }
-//     ]);
-
-//     // Charts created in the last 30 days
-//     const thirtyDaysAgo = new Date();
-//     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+//       if (validIds.length > 0) {
+//         filter._id = { $in: validIds };
+//       }
+//     }
     
-//     const recentCharts = await Chart.countDocuments({
-//       createdDate: { $gte: thirtyDaysAgo }
-//     });
-
-//     // Most active users (by chart creation)
-//     const topUsers = await Chart.aggregate([
-//       {
-//         $group: {
-//           _id: '$userId',
-//           chartCount: { $sum: 1 }
-//         }
-//       },
-//       {
-//         $lookup: {
-//           from: 'users',
-//           localField: '_id',
-//           foreignField: '_id',
-//           as: 'user'
-//         }
-//       },
-//       {
-//         $unwind: '$user'
-//       },
-//       {
-//         $project: {
-//           userName: '$user.name',
-//           userEmail: '$user.email',
-//           chartCount: 1
-//         }
-//       },
-//       {
-//         $sort: { chartCount: -1 }
-//       },
-//       {
-//         $limit: 5
+//     // Query charts with populated references
+//     let charts;
+//     try {
+//       charts = await Chart.find(filter)
+//         .populate('userId', 'name email')
+//         .populate('fileId', 'originalName fileName fileType')
+//         .lean();
+//     } catch (populateError) {
+//       // If populate fails, try without it
+//       console.warn('Populate failed, fetching without references:', populateError.message);
+//       charts = await Chart.find(filter).lean();
+//     }
+    
+//     if (format === 'csv') {
+//       // Generate CSV format
+//       if (charts.length === 0) {
+//         return res.status(200).json({
+//           success: true,
+//           message: 'No charts found for export',
+//           totalCharts: 0
+//         });
 //       }
-//     ]);
-
-//     // Charts created per month (last 6 months)
-//     const sixMonthsAgo = new Date();
-//     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-//     const chartsPerMonth = await Chart.aggregate([
-//       {
-//         $match: {
-//           createdDate: { $gte: sixMonthsAgo }
-//         }
-//       },
-//       {
-//         $group: {
-//           _id: {
-//             year: { $year: '$createdDate' },
-//             month: { $month: '$createdDate' }
-//           },
-//           count: { $sum: 1 }
-//         }
-//       },
-//       {
-//         $sort: { '_id.year': 1, '_id.month': 1 }
-//       }
-//     ]);
-
+      
+//       const csvData = charts.map(chart => ({
+//         id: chart._id.toString(),
+//         chartName: chart.chartName || 'Untitled',
+//         chartType: chart.chartType,
+//         xAxis: chart.xAxis,
+//         yAxis: chart.yAxis,
+//         createdDate: chart.createdDate ? new Date(chart.createdDate).toISOString() : '',
+//         userId: chart.userId?._id?.toString() || chart.userId?.toString() || '',
+//         userName: chart.userId?.name || 'Unknown',
+//         userEmail: chart.userId?.email || 'Unknown',
+//         fileId: chart.fileId?._id?.toString() || chart.fileId?.toString() || '',
+//         fileName: chart.fileId?.originalName || chart.fileId?.fileName || 'Unknown',
+//         fileType: chart.fileId?.fileType || 'Unknown'
+//       }));
+      
+//       // Convert to CSV string
+//       const headers = Object.keys(csvData[0]);
+//       const csvRows = [
+//         headers.join(','),
+//         ...csvData.map(row => 
+//           headers.map(header => {
+//             const value = row[header];
+//             // Escape commas and quotes in CSV values
+//             if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+//               return `"${value.replace(/"/g, '""')}"`;
+//             }
+//             return value;
+//           }).join(',')
+//         )
+//       ];
+      
+//       const csvString = csvRows.join('\n');
+      
+//       res.setHeader('Content-Type', 'text/csv');
+//       res.setHeader('Content-Disposition', 'attachment; filename=charts_export.csv');
+//       return res.status(200).send(csvString);
+//     }
+    
+//     // Default JSON response
 //     res.status(200).json({
 //       success: true,
-//       data: {
-//         totalCharts,
-//         chartsByType,
-//         recentCharts,
-//         topUsers,
-//         chartsPerMonth
-//       }
+//       data: charts,
+//       exportDate: new Date(),
+//       totalCharts: charts.length,
+//       format,
+//       appliedFilter: Object.keys(filter).length > 0 ? filter : null
 //     });
+    
 //   } catch (error) {
-//     console.error('Error fetching chart statistics:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Failed to fetch chart statistics'
-//     });
-//   }
-// };
-
-// // Get all charts
-// const getAllCharts = async (req, res) => {
-//   try {
-//     const charts = await Chart.find({})
-//       .populate('userId', 'name email')
-//       .populate('fileId', 'filename originalName uploadDate')
-//       .sort({ createdDate: -1 });
-
-//     res.status(200).json({
-//       success: true,
-//       data: charts
-//     });
-//   } catch (error) {
-//     console.error('Error fetching charts:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Failed to fetch charts data'
-//     });
-//   }
-// };
-
-// // Delete a chart
-// const deleteChart = async (req, res) => {
-//   try {
-//     const { chartId } = req.params;
-
-//     const chart = await Chart.findById(chartId);
-//     if (!chart) {
-//       return res.status(404).json({
+//     console.error('Export charts error:', error);
+    
+//     // Handle specific MongoDB errors
+//     if (error.name === 'CastError') {
+//       return res.status(400).json({
 //         success: false,
-//         message: 'Chart not found'
+//         message: 'Invalid ID format provided',
+//         error: error.message
 //       });
 //     }
-
-//     await Chart.findByIdAndDelete(chartId);
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Chart deleted successfully'
-//     });
-//   } catch (error) {
-//     console.error('Error deleting chart:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Failed to delete chart'
-//     });
-//   }
-// };
-
-// // Get chart details by ID
-// const getChartById = async (req, res) => {
-//   try {
-//     const { chartId } = req.params;
-
-//     const chart = await Chart.findById(chartId)
-//       .populate('userId', 'name email')
-//       .populate('fileId', 'filename originalName uploadDate');
-
-//     if (!chart) {
-//       return res.status(404).json({
+    
+//     if (error.name === 'ValidationError') {
+//       return res.status(400).json({
 //         success: false,
-//         message: 'Chart not found'
+//         message: 'Data validation error',
+//         error: error.message
 //       });
 //     }
-
-//     res.status(200).json({
-//       success: true,
-//       data: chart
-//     });
-//   } catch (error) {
-//     console.error('Error fetching chart:', error);
+    
+//     // Generic server error
 //     res.status(500).json({
 //       success: false,
-//       message: 'Failed to fetch chart'
+//       message: 'Failed to export charts',
+//       error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
 //     });
 //   }
 // };
@@ -503,8 +794,11 @@ module.exports = {
   getStorageUsage,
 
 
-  //  getAllCharts,
-  // getChartStats,
-  // deleteChart,
-  // getChartById
+  getChartStats,
+  getAllCharts,
+  getChartById,
+  deleteChart,
+  bulkDeleteCharts,
+  getDashboardOverview,
+  // exportCharts
 };

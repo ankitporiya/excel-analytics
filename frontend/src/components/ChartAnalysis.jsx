@@ -1,31 +1,154 @@
 // import React, { useState, useEffect } from 'react';
-// import { getChartStats, getAllCharts, deleteChart } from '../utils/adminApi';
+// import { getChartStats, getAllCharts,
+//   deleteChart,
+//   bulkDeleteCharts,
+//   searchCharts,
+//   exportCharts
+// } from '../utils/adminApi';
 
 // const ChartAnalysis = () => {
 //   const [stats, setStats] = useState(null);
 //   const [charts, setCharts] = useState([]);
+//   const [filteredCharts, setFilteredCharts] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [selectedChart, setSelectedChart] = useState(null);
 //   const [showDeleteModal, setShowDeleteModal] = useState(false);
 //   const [chartToDelete, setChartToDelete] = useState(null);
+//   const [selectedCharts, setSelectedCharts] = useState([]);
+//   const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [filters, setFilters] = useState({
+//     chartType: '',
+//     sortBy: 'createdDate',
+//     sortOrder: 'desc'
+//   });
+//   const [error, setError] = useState(null);
+
+//   // Mock data for demonstration
+//   useEffect(() => {
+//     // Simulate API calls with mock data
+//     const mockStats = {
+//       totalCharts: 156,
+//       recentCharts: 23,
+//       chartsByType: [
+//         { _id: 'bar', count: 45 },
+//         { _id: 'line', count: 38 },
+//         { _id: 'pie', count: 32 },
+//         { _id: 'scatter', count: 25 },
+//         { _id: 'column3d', count: 16 }
+//       ],
+//       topUsers: [
+//         { userName: 'John Smith', userEmail: 'john@example.com', chartCount: 12 },
+//         { userName: 'Sarah Johnson', userEmail: 'sarah@example.com', chartCount: 9 },
+//         { userName: 'Mike Chen', userEmail: 'mike@example.com', chartCount: 7 },
+//         { userName: 'Emily Davis', userEmail: 'emily@example.com', chartCount: 6 }
+//       ]
+//     };
+
+//     const mockCharts = [
+//       {
+//         _id: '1',
+//         chartName: 'Sales Performance Q4',
+//         chartType: 'bar',
+//         xAxis: 'Month',
+//         yAxis: 'Revenue',
+//         userId: { name: 'John Smith', email: 'john@example.com' },
+//         fileName: 'sales_data.csv',
+//         createdAt: new Date('2024-12-15T10:30:00Z')
+//       },
+//       {
+//         _id: '2',
+//         chartName: 'Customer Growth Trend',
+//         chartType: 'line',
+//         xAxis: 'Date',
+//         yAxis: 'Customers',
+//         userId: { name: 'Sarah Johnson', email: 'sarah@example.com' },
+//         fileName: 'customer_data.xlsx',
+//         createdAt: new Date('2024-12-14T14:20:00Z')
+//       },
+//       {
+//         _id: '3',
+//         chartName: 'Market Share Distribution',
+//         chartType: 'pie',
+//         xAxis: 'Company',
+//         yAxis: 'Percentage',
+//         userId: { name: 'Mike Chen', email: 'mike@example.com' },
+//         fileName: 'market_analysis.csv',
+//         createdAt: new Date('2024-12-13T09:15:00Z')
+//       }
+//     ];
+
+//     setTimeout(() => {
+//       setStats(mockStats);
+//       setCharts(mockCharts);
+//       setFilteredCharts(mockCharts);
+//       setLoading(false);
+//     }, 1000);
+//   }, []);
 
 //   useEffect(() => {
-//     fetchData();
-//   }, []);
+//     handleSearch();
+//   }, [searchTerm, filters, charts]);
 
 //   const fetchData = async () => {
 //     setLoading(true);
+//     setError(null);
 //     try {
+//     //   In a real app, these would be actual API calls
 //       const [statsResponse, chartsResponse] = await Promise.all([
 //         getChartStats(),
 //         getAllCharts()
 //       ]);
 //       setStats(statsResponse);
 //       setCharts(chartsResponse);
+//       setFilteredCharts(chartsResponse);
 //     } catch (error) {
 //       console.error('Error fetching chart data:', error);
+//       setError('Failed to load chart data. Please try again.');
 //     } finally {
 //       setLoading(false);
+//     }
+//   };
+
+//   const handleSearch = async () => {
+//     try {
+//       if (searchTerm.trim() || filters.chartType) {
+//         let filtered = charts.filter(chart => {
+//           const matchesSearch = !searchTerm.trim() ||
+//             chart.chartName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//             chart.xAxis.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//             chart.yAxis.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//             chart.fileName.toLowerCase().includes(searchTerm.toLowerCase());
+
+//           const matchesType = !filters.chartType || chart.chartType === filters.chartType;
+
+//           return matchesSearch && matchesType;
+//         });
+
+//         // Apply sorting
+//         filtered.sort((a, b) => {
+//           let aVal = a[filters.sortBy];
+//           let bVal = b[filters.sortBy];
+
+//           if (filters.sortBy === 'createdDate') {
+//             aVal = new Date(a.createdAt);
+//             bVal = new Date(b.createdAt);
+//           }
+
+//           if (filters.sortOrder === 'asc') {
+//             return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+//           } else {
+//             return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+//           }
+//         });
+
+//         setFilteredCharts(filtered);
+//       } else {
+//         setFilteredCharts(charts);
+//       }
+//     } catch (error) {
+//       console.error('Search failed:', error);
+//       setFilteredCharts(charts);
 //     }
 //   };
 
@@ -36,14 +159,61 @@
 
 //   const confirmDelete = async () => {
 //     try {
-//       await deleteChart(chartToDelete._id);
+//       // await deleteChart(chartToDelete._id);
 //       setCharts(charts.filter(chart => chart._id !== chartToDelete._id));
 //       setShowDeleteModal(false);
 //       setChartToDelete(null);
-//       fetchData(); // Refresh stats
+//       // await fetchData(); // Refresh stats
 //     } catch (error) {
 //       console.error('Error deleting chart:', error);
-//       alert('Failed to delete chart');
+//       alert('Failed to delete chart: ' + error.message);
+//     }
+//   };
+
+//   const handleBulkDelete = () => {
+//     if (selectedCharts.length === 0) {
+//       alert('Please select charts to delete');
+//       return;
+//     }
+//     setShowBulkDeleteModal(true);
+//   };
+
+//   const confirmBulkDelete = async () => {
+//     try {
+//       // await bulkDeleteCharts(selectedCharts);
+//       setCharts(charts.filter(chart => !selectedCharts.includes(chart._id)));
+//       setSelectedCharts([]);
+//       setShowBulkDeleteModal(false);
+//       // await fetchData(); // Refresh stats
+//     } catch (error) {
+//       console.error('Error bulk deleting charts:', error);
+//       alert('Failed to delete charts: ' + error.message);
+//     }
+//   };
+
+//   const handleSelectChart = (chartId) => {
+//     setSelectedCharts(prev =>
+//       prev.includes(chartId)
+//         ? prev.filter(id => id !== chartId)
+//         : [...prev, chartId]
+//     );
+//   };
+
+//   const handleSelectAll = () => {
+//     if (selectedCharts.length === filteredCharts.length) {
+//       setSelectedCharts([]);
+//     } else {
+//       setSelectedCharts(filteredCharts.map(chart => chart._id));
+//     }
+//   };
+
+//   const handleExport = async () => {
+//     try {
+//       // await exportCharts();
+//       alert('Charts exported successfully!');
+//     } catch (error) {
+//       console.error('Export failed:', error);
+//       alert('Failed to export charts: ' + error.message);
 //     }
 //   };
 
@@ -62,7 +232,9 @@
 //     return new Date(date).toLocaleDateString('en-US', {
 //       year: 'numeric',
 //       month: 'short',
-//       day: 'numeric'
+//       day: 'numeric',
+//       hour: '2-digit',
+//       minute: '2-digit'
 //     });
 //   };
 
@@ -77,10 +249,30 @@
 //     );
 //   }
 
+//   if (error) {
+//     return (
+//       <div className="container mx-auto px-4 py-8">
+//         <div className="text-center py-8">
+//           <div className="text-6xl mb-4" style={{ color: "#dc3545" }}>⚠️</div>
+//           <p className="text-lg mb-4" style={{ color: "#dc3545" }}>{error}</p>
+//           <button
+//             onClick={fetchData}
+//             className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//             style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}
+//             onMouseEnter={(e) => (e.target.style.backgroundColor = "#819fa7")}
+//             onMouseLeave={(e) => (e.target.style.backgroundColor = "#5b6e74")}
+//           >
+//             Retry
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
 //   return (
 //     <div className="container mx-auto px-4 py-8">
 //       <div className="mb-6">
-//         <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>Chart Analysis</h2>
+//         <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>Chart Analysis Dashboard</h2>
 //         <p className="text-sm mt-1" style={{ color: "#819fa7" }}>Monitor and analyze chart creation and usage</p>
 //       </div>
 
@@ -112,7 +304,7 @@
 //             <div className="flex items-center justify-between">
 //               <div>
 //                 <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Chart Types</p>
-//                 <p className="text-3xl font-bold" style={{ color: "#0d0d0d" }}>{stats.chartsByType.length}</p>
+//                 <p className="text-3xl font-bold" style={{ color: "#0d0d0d" }}>{stats.chartsByType?.length || 0}</p>
 //               </div>
 //               <div className="text-3xl" style={{ color: "#bde8f1" }}>🎨</div>
 //             </div>
@@ -122,7 +314,7 @@
 //             <div className="flex items-center justify-between">
 //               <div>
 //                 <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Active Users</p>
-//                 <p className="text-3xl font-bold" style={{ color: "#0d0d0d" }}>{stats.topUsers.length}</p>
+//                 <p className="text-3xl font-bold" style={{ color: "#0d0d0d" }}>{stats.topUsers?.length || 0}</p>
 //               </div>
 //               <div className="text-3xl" style={{ color: "#bde8f1" }}>👥</div>
 //             </div>
@@ -130,13 +322,97 @@
 //         </div>
 //       )}
 
+//       {/* Search and Filter Controls */}
+//       <div className="bg-white rounded-lg shadow-lg p-6 mb-8" style={{ backgroundColor: "#f2f2f0" }}>
+//         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+//           <div className="flex flex-col md:flex-row gap-4 flex-1">
+//             <div className="flex-1">
+//               <input
+//                 type="text"
+//                 placeholder="Search charts by name, axis, or file..."
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+//                 style={{
+//                   borderColor: "#bde8f1",
+//                   focusRingColor: "#5b6e74",
+//                   backgroundColor: "#fff"
+//                 }}
+//               />
+//             </div>
+//             <div>
+//               <select
+//                 value={filters.chartType}
+//                 onChange={(e) => setFilters({...filters, chartType: e.target.value})}
+//                 className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+//                 style={{
+//                   borderColor: "#bde8f1",
+//                   focusRingColor: "#5b6e74",
+//                   backgroundColor: "#fff"
+//                 }}
+//               >
+//                 <option value="">All Types</option>
+//                 <option value="bar">Bar Chart</option>
+//                 <option value="line">Line Chart</option>
+//                 <option value="pie">Pie Chart</option>
+//                 <option value="scatter">Scatter Plot</option>
+//                 <option value="column3d">3D Column</option>
+//               </select>
+//             </div>
+//             <div>
+//               <select
+//                 value={`${filters.sortBy}-${filters.sortOrder}`}
+//                 onChange={(e) => {
+//                   const [sortBy, sortOrder] = e.target.value.split('-');
+//                   setFilters({...filters, sortBy, sortOrder});
+//                 }}
+//                 className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+//                 style={{
+//                   borderColor: "#bde8f1",
+//                   focusRingColor: "#5b6e74",
+//                   backgroundColor: "#fff"
+//                 }}
+//               >
+//                 <option value="createdDate-desc">Newest First</option>
+//                 <option value="createdDate-asc">Oldest First</option>
+//                 <option value="chartName-asc">Name A-Z</option>
+//                 <option value="chartName-desc">Name Z-A</option>
+//               </select>
+//             </div>
+//           </div>
+
+//           <div className="flex gap-2">
+//             <button
+//               onClick={handleExport}
+//               className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//               style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}
+//               onMouseEnter={(e) => (e.target.style.backgroundColor = "#819fa7")}
+//               onMouseLeave={(e) => (e.target.style.backgroundColor = "#5b6e74")}
+//             >
+//               📥 Export
+//             </button>
+//             {selectedCharts.length > 0 && (
+//               <button
+//                 onClick={handleBulkDelete}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#dc3545", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
+//               >
+//                 🗑️ Delete Selected ({selectedCharts.length})
+//               </button>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
 //       {/* Chart Type Distribution and Top Users */}
 //       <div className="grid lg:grid-cols-2 gap-8 mb-8">
 //         {/* Chart Types */}
 //         <div className="bg-white rounded-lg shadow-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
 //           <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>Charts by Type</h2>
 //           <div className="space-y-4">
-//             {stats?.chartsByType.map((type, index) => (
+//             {stats?.chartsByType?.map((type, index) => (
 //               <div key={index} className="flex justify-between items-center py-3 border-b" style={{ borderColor: "#bde8f1" }}>
 //                 <div className="flex items-center gap-2">
 //                   <span className="text-lg">{getChartTypeIcon(type._id)}</span>
@@ -152,7 +428,7 @@
 //         <div className="bg-white rounded-lg shadow-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
 //           <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>Most Active Users</h2>
 //           <div className="space-y-4">
-//             {stats?.topUsers.map((user, index) => (
+//             {stats?.topUsers?.map((user, index) => (
 //               <div key={index} className="flex justify-between items-center py-3 border-b" style={{ borderColor: "#bde8f1" }}>
 //                 <div>
 //                   <span className="font-medium" style={{ color: "#0d0d0d" }}>{user.userName}</span>
@@ -167,19 +443,46 @@
 
 //       {/* Charts List */}
 //       <div className="bg-white rounded-lg shadow-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
-//         <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>All Charts</h2>
-        
-//         {charts.length === 0 ? (
+//         <div className="flex justify-between items-center mb-4">
+//           <h2 className="text-xl font-bold" style={{ color: "#0d0d0d" }}>
+//             All Charts {filteredCharts.length !== charts.length && `(${filteredCharts.length} of ${charts.length})`}
+//           </h2>
+//           {filteredCharts.length > 0 && (
+//             <label className="flex items-center gap-2 cursor-pointer">
+//               <input
+//                 type="checkbox"
+//                 checked={selectedCharts.length === filteredCharts.length}
+//                 onChange={handleSelectAll}
+//                 className="rounded"
+//               />
+//               <span style={{ color: "#819fa7" }}>Select All</span>
+//             </label>
+//           )}
+//         </div>
+
+//         {filteredCharts.length === 0 ? (
 //           <div className="text-center py-8">
 //             <div className="text-6xl mb-4" style={{ color: "#bde8f1" }}>📊</div>
-//             <p className="text-lg" style={{ color: "#819fa7" }}>No charts found</p>
-//             <p style={{ color: "#819fa7" }}>Charts will appear here when users create them</p>
+//             <p className="text-lg" style={{ color: "#819fa7" }}>
+//               {searchTerm || filters.chartType ? 'No charts match your search criteria' : 'No charts found'}
+//             </p>
+//             <p style={{ color: "#819fa7" }}>
+//               {searchTerm || filters.chartType ? 'Try adjusting your search terms' : 'Charts will appear here when users create them'}
+//             </p>
 //           </div>
 //         ) : (
 //           <div className="overflow-x-auto">
 //             <table className="w-full">
 //               <thead>
 //                 <tr className="border-b" style={{ borderColor: "#bde8f1" }}>
+//                   <th className="text-left py-3 px-4 w-12">
+//                     <input
+//                       type="checkbox"
+//                       checked={selectedCharts.length === filteredCharts.length}
+//                       onChange={handleSelectAll}
+//                       className="rounded"
+//                     />
+//                   </th>
 //                   <th className="text-left py-3 px-4" style={{ color: "#0d0d0d" }}>Chart Name</th>
 //                   <th className="text-left py-3 px-4" style={{ color: "#0d0d0d" }}>Type</th>
 //                   <th className="text-left py-3 px-4" style={{ color: "#0d0d0d" }}>User</th>
@@ -189,8 +492,16 @@
 //                 </tr>
 //               </thead>
 //               <tbody>
-//                 {charts.map((chart) => (
+//                 {filteredCharts.map((chart) => (
 //                   <tr key={chart._id} className="border-b hover:bg-white transition-colors" style={{ borderColor: "#bde8f1" }}>
+//                     <td className="py-3 px-4">
+//                       <input
+//                         type="checkbox"
+//                         checked={selectedCharts.includes(chart._id)}
+//                         onChange={() => handleSelectChart(chart._id)}
+//                         className="rounded"
+//                       />
+//                     </td>
 //                     <td className="py-3 px-4">
 //                       <div className="font-medium" style={{ color: "#0d0d0d" }}>{chart.chartName}</div>
 //                       <div className="text-xs" style={{ color: "#819fa7" }}>
@@ -204,23 +515,20 @@
 //                       </div>
 //                     </td>
 //                     <td className="py-3 px-4">
-//                       <div className="font-medium" style={{ color: "#0d0d0d" }}>{chart.userId?.name}</div>
+//                       <div className="font-medium" style={{ color: "#0d0d0d" }}>{chart.userId?.name || 'N/A'}</div>
 //                       <div className="text-xs" style={{ color: "#819fa7" }}>{chart.userId?.email}</div>
 //                     </td>
 //                     <td className="py-3 px-4">
-//                       <div className="font-medium" style={{ color: "#0d0d0d" }}>{chart.fileId?.originalName}</div>
-//                       <div className="text-xs" style={{ color: "#819fa7" }}>
-//                         {chart.fileId?.uploadDate ? formatDate(chart.fileId.uploadDate) : 'N/A'}
-//                       </div>
+//                       <span style={{ color: "#819fa7" }}>{chart.fileName}</span>
 //                     </td>
-//                     <td className="py-3 px-4" style={{ color: "#819fa7" }}>
-//                       {formatDate(chart.createdDate)}
+//                     <td className="py-3 px-4">
+//                       <span style={{ color: "#819fa7" }}>{formatDate(chart.createdAt)}</span>
 //                     </td>
 //                     <td className="py-3 px-4">
 //                       <div className="flex gap-2">
 //                         <button
 //                           onClick={() => setSelectedChart(chart)}
-//                           className="px-3 py-1 rounded text-sm font-medium transition-colors duration-300"
+//                           className="px-3 py-1 text-sm rounded-lg font-medium transition-colors duration-300"
 //                           style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}
 //                           onMouseEnter={(e) => (e.target.style.backgroundColor = "#819fa7")}
 //                           onMouseLeave={(e) => (e.target.style.backgroundColor = "#5b6e74")}
@@ -229,7 +537,7 @@
 //                         </button>
 //                         <button
 //                           onClick={() => handleDeleteChart(chart)}
-//                           className="px-3 py-1 rounded text-sm font-medium transition-colors duration-300"
+//                           className="px-3 py-1 text-sm rounded-lg font-medium transition-colors duration-300"
 //                           style={{ backgroundColor: "#dc3545", color: "#fff" }}
 //                           onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
 //                           onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
@@ -246,83 +554,142 @@
 //         )}
 //       </div>
 
-//       {/* Chart Details Modal */}
-//       {selectedChart && (
-//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-//           <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4" style={{ backgroundColor: "#f2f2f0" }}>
-//             <div className="flex justify-between items-center mb-4">
-//               <h3 className="text-xl font-bold" style={{ color: "#0d0d0d" }}>Chart Details</h3>
-//               <button
-//                 onClick={() => setSelectedChart(null)}
-//                 className="text-2xl" style={{ color: "#819fa7" }}
-//               >
-//                 ×
-//               </button>
-//             </div>
-            
-//             <div className="space-y-4">
-//               <div className="grid grid-cols-2 gap-4">
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Chart Name</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.chartName}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Chart Type</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.chartType}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>X-Axis</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.xAxis}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Y-Axis</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.yAxis}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Created By</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.userId?.name}</p>
-//                 </div>
-//                 <div>
-//                   <p className="text-sm font-medium" style={{ color: "#819fa7" }}>Created Date</p>
-//                   <p className="font-semibold" style={{ color: "#0d0d0d" }}>{formatDate(selectedChart.createdDate)}</p>
-//                 </div>
-//               </div>
-              
-//               <div>
-//                 <p className="text-sm font-medium mb-2" style={{ color: "#819fa7" }}>Source File</p>
-//                 <p className="font-semibold" style={{ color: "#0d0d0d" }}>{selectedChart.fileId?.originalName}</p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
 //       {/* Delete Confirmation Modal */}
 //       {showDeleteModal && (
 //         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 //           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" style={{ backgroundColor: "#f2f2f0" }}>
-//             <h3 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>Confirm Delete</h3>
+//             <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>Confirm Delete</h3>
 //             <p className="mb-6" style={{ color: "#819fa7" }}>
-//               Are you sure you want to delete the chart "{chartToDelete?.chartName}"? This action cannot be undone.
+//               Are you sure you want to delete "{chartToDelete?.chartName}"? This action cannot be undone.
 //             </p>
-//             <div className="flex gap-4">
+//             <div className="flex gap-4 justify-end">
+//               <button
+//                 onClick={() => setShowDeleteModal(false)}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#6c757d", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#5a6268")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#6c757d")}
+//               >
+//                 Cancel
+//               </button>
 //               <button
 //                 onClick={confirmDelete}
-//                 className="flex-1 px-4 py-2 rounded-lg font-semibold transition-colors duration-300"
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
 //                 style={{ backgroundColor: "#dc3545", color: "#fff" }}
 //                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
 //                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
 //               >
 //                 Delete
 //               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Bulk Delete Confirmation Modal */}
+//       {showBulkDeleteModal && (
+//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+//           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" style={{ backgroundColor: "#f2f2f0" }}>
+//             <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>Confirm Bulk Delete</h3>
+//             <p className="mb-6" style={{ color: "#819fa7" }}>
+//               Are you sure you want to delete {selectedCharts.length} selected charts? This action cannot be undone.
+//             </p>
+//             <div className="flex gap-4 justify-end">
 //               <button
-//                 onClick={() => setShowDeleteModal(false)}
-//                 className="flex-1 px-4 py-2 rounded-lg font-semibold transition-colors duration-300"
-//                 style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}
-//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#819fa7")}
-//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#5b6e74")}
+//                 onClick={() => setShowBulkDeleteModal(false)}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#6c757d", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#5a6268")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#6c757d")}
 //               >
 //                 Cancel
+//               </button>
+//               <button
+//                 onClick={confirmBulkDelete}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#dc3545", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
+//               >
+//                 Delete All
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Chart Details Modal */}
+//       {selectedChart && (
+//         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+//           <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4" style={{ backgroundColor: "#f2f2f0" }}>
+//             <div className="flex justify-between items-center mb-4">
+//               <h3 className="text-lg font-bold" style={{ color: "#0d0d0d" }}>Chart Details</h3>
+//               <button
+//                 onClick={() => setSelectedChart(null)}
+//                 className="text-2xl hover:opacity-70"
+//                 style={{ color: "#819fa7" }}
+//               >
+//                 ✕
+//               </button>
+//             </div>
+//             <div className="space-y-4">
+//               <div>
+//                 <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>Chart Name</label>
+//                 <p className="font-medium" style={{ color: "#0d0d0d" }}>{selectedChart.chartName}</p>
+//               </div>
+//               <div className="grid grid-cols-2 gap-4">
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>Chart Type</label>
+//                   <p style={{ color: "#0d0d0d" }}>{selectedChart.chartType}</p>
+//                 </div>
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>File Name</label>
+//                   <p style={{ color: "#0d0d0d" }}>{selectedChart.fileName}</p>
+//                 </div>
+//               </div>
+//               <div className="grid grid-cols-2 gap-4">
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>X-Axis</label>
+//                   <p style={{ color: "#0d0d0d" }}>{selectedChart.xAxis}</p>
+//                 </div>
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>Y-Axis</label>
+//                   <p style={{ color: "#0d0d0d" }}>{selectedChart.yAxis}</p>
+//                 </div>
+//               </div>
+//               <div className="grid grid-cols-2 gap-4">
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>Created By</label>
+//                   <p style={{ color: "#0d0d0d" }}>{selectedChart.userId?.name || 'N/A'}</p>
+//                   <p className="text-xs" style={{ color: "#819fa7" }}>{selectedChart.userId?.email}</p>
+//                 </div>
+//                 <div>
+//                   <label className="block text-sm font-medium mb-1" style={{ color: "#819fa7" }}>Created Date</label>
+//                   <p style={{ color: "#0d0d0d" }}>{formatDate(selectedChart.createdAt)}</p>
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="flex gap-4 justify-end mt-6">
+//               <button
+//                 onClick={() => setSelectedChart(null)}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#6c757d", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#5a6268")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#6c757d")}
+//               >
+//                 Close
+//               </button>
+//               <button
+//                 onClick={() => {
+//                   handleDeleteChart(selectedChart);
+//                   setSelectedChart(null);
+//                 }}
+//                 className="px-4 py-2 rounded-lg font-medium transition-colors duration-300"
+//                 style={{ backgroundColor: "#dc3545", color: "#fff" }}
+//                 onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
+//                 onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
+//               >
+//                 Delete Chart
 //               </button>
 //             </div>
 //           </div>
@@ -333,3 +700,673 @@
 // };
 
 // export default ChartAnalysis;
+
+import React, { useState, useEffect } from "react";
+import {
+  getChartStats,
+  getAllCharts,
+  deleteChart,
+  bulkDeleteCharts,
+} from "../utils/adminApi";
+
+const ChartAnalysis = () => {
+  const [stats, setStats] = useState(null);
+  const [charts, setCharts] = useState([]);
+  const [filteredCharts, setFilteredCharts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedChart, setSelectedChart] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [chartToDelete, setChartToDelete] = useState(null);
+  const [selectedCharts, setSelectedCharts] = useState([]);
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    chartType: "",
+    sortBy: "createdDate",
+    sortOrder: "desc",
+  });
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm, filters, charts]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [statsResponse, chartsResponse] = await Promise.all([
+        getChartStats(),
+        getAllCharts(),
+      ]);
+      setStats(statsResponse);
+      setCharts(chartsResponse);
+      setFilteredCharts(chartsResponse);
+    } catch (error) {
+      console.error("Error fetching chart data:", error);
+      setError("Failed to load chart data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = () => {
+    let filtered = charts.filter((chart) => {
+      const matchesSearch =
+        !searchTerm.trim() ||
+        chart.chartName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        chart.xAxis.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        chart.yAxis.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        chart.fileName.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesType =
+        !filters.chartType || chart.chartType === filters.chartType;
+      return matchesSearch && matchesType;
+    });
+
+    filtered.sort((a, b) => {
+      let aVal =
+        filters.sortBy === "createdDate"
+          ? new Date(a.createdAt)
+          : a[filters.sortBy];
+      let bVal =
+        filters.sortBy === "createdDate"
+          ? new Date(b.createdAt)
+          : b[filters.sortBy];
+      return filters.sortOrder === "asc"
+        ? aVal < bVal
+          ? -1
+          : 1
+        : aVal > bVal
+        ? -1
+        : 1;
+    });
+
+    setFilteredCharts(filtered);
+  };
+
+  const handleDeleteChart = (chart) => {
+    setChartToDelete(chart);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteChart(chartToDelete._id);
+      await fetchData();
+      setShowDeleteModal(false);
+      setChartToDelete(null);
+    } catch (error) {
+      console.error("Error deleting chart:", error);
+      alert("Failed to delete chart: " + error.message);
+    }
+  };
+
+  const confirmBulkDelete = async () => {
+    try {
+      await bulkDeleteCharts(selectedCharts);
+      await fetchData();
+      setSelectedCharts([]);
+      setShowBulkDeleteModal(false);
+    } catch (error) {
+      console.error("Error bulk deleting charts:", error);
+      alert("Failed to delete charts: " + error.message);
+    }
+  };
+
+  const handleSelectChart = (chartId) => {
+    setSelectedCharts((prev) =>
+      prev.includes(chartId)
+        ? prev.filter((id) => id !== chartId)
+        : [...prev, chartId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    setSelectedCharts(
+      selectedCharts.length === filteredCharts.length
+        ? []
+        : filteredCharts.map((chart) => chart._id)
+    );
+  };
+
+  //   const handleExport = async () => {
+  //     try {
+  //       await exportCharts();
+  //       alert('Charts exported successfully!');
+  //     } catch (error) {
+  //       console.error('Export failed:', error);
+  //       alert('Failed to export charts: ' + error.message);
+  //     }
+  //   };
+
+  const getChartTypeIcon = (type) => {
+    const icons = {
+      bar: "📊",
+      line: "📈",
+      pie: "🥧",
+      scatter: "🔸",
+      column3d: "📊",
+    };
+    return icons[type] || "📊";
+  };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <div className="text-6xl mb-4" style={{ color: "#bde8f1" }}>
+          📊
+        </div>
+        <p className="text-lg" style={{ color: "#819fa7" }}>
+          Loading chart analysis...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <div className="text-6xl mb-4" style={{ color: "#dc3545" }}>
+          ⚠️
+        </div>
+        <p className="text-lg mb-4" style={{ color: "#dc3545" }}>
+          {error}
+        </p>
+        <button
+          onClick={fetchData}
+          className="px-4 py-2 rounded-lg font-medium"
+          style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>
+          Chart Analysis Dashboard
+        </h2>
+        <p className="text-sm mt-1" style={{ color: "#819fa7" }}>
+          Monitor and analyze chart creation and usage
+        </p>
+      </div>
+
+      {/* Statistics Cards */}
+      {stats && (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {[
+            { label: "Total Charts", value: stats.totalCharts, icon: "📊" },
+            {
+              label: "Recent Charts",
+              value: stats.recentCharts,
+              icon: "📈",
+              sublabel: "Last 30 days",
+            },
+            {
+              label: "Chart Types",
+              value: stats.chartsByType?.length || 0,
+              icon: "🎨",
+            },
+            {
+              label: "Active Users",
+              value: stats.topUsers?.length || 0,
+              icon: "👥",
+            },
+          ].map((stat, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-lg shadow-lg p-6"
+              style={{ backgroundColor: "#f2f2f0" }}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p
+                    className="text-sm font-medium"
+                    style={{ color: "#819fa7" }}
+                  >
+                    {stat.label}
+                  </p>
+                  <p
+                    className="text-3xl font-bold"
+                    style={{ color: "#0d0d0d" }}
+                  >
+                    {stat.value}
+                  </p>
+                  {stat.sublabel && (
+                    <p className="text-xs" style={{ color: "#819fa7" }}>
+                      {stat.sublabel}
+                    </p>
+                  )}
+                </div>
+                <div className="text-3xl" style={{ color: "#bde8f1" }}>
+                  {stat.icon}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Chart Type Distribution and Top Users */}
+      <div className="grid lg:grid-cols-2 gap-8 mb-8">
+        <div
+          className="bg-white rounded-lg shadow-lg p-6"
+          style={{ backgroundColor: "#f2f2f0" }}
+        >
+          <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
+            Charts by Type
+          </h2>
+          <div className="space-y-4">
+            {stats?.chartsByType?.map((type, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center py-3 border-b"
+                style={{ borderColor: "#bde8f1" }}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{getChartTypeIcon(type._id)}</span>
+                  <span style={{ color: "#819fa7" }}>
+                    {type._id.charAt(0).toUpperCase() + type._id.slice(1)}
+                  </span>
+                </div>
+                <span className="font-semibold" style={{ color: "#0d0d0d" }}>
+                  {type.count}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="bg-white rounded-lg shadow-lg p-6"
+          style={{ backgroundColor: "#f2f2f0" }}
+        >
+          <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
+            Most Active Users
+          </h2>
+          <div className="space-y-4">
+            {stats?.topUsers?.map((user, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center py-3 border-b"
+                style={{ borderColor: "#bde8f1" }}
+              >
+                <div>
+                  <span className="font-medium" style={{ color: "#0d0d0d" }}>
+                    {user.userName}
+                  </span>
+                  <p className="text-xs" style={{ color: "#819fa7" }}>
+                    {user.userEmail}
+                  </p>
+                </div>
+                <span className="font-semibold" style={{ color: "#0d0d0d" }}>
+                  {user.chartCount} charts
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Search and Filter Controls */}
+      <div
+        className="bg-white rounded-lg shadow-lg p-6 mb-8"
+        style={{ backgroundColor: "#f2f2f0" }}
+      >
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-4 flex-1">
+            {/* <input
+              type="text"
+              placeholder="Search charts by name, axis, or file..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="flex-1 px-4 py-2 border rounded-lg"
+              style={{ borderColor: "#bde8f1", backgroundColor: "#fff" }}
+            /> */}
+            <h2
+              className="flex-1 px-4 py-2 text-xl font-bold"
+              style={{ color: "#0d0d0d" }}
+            >
+              Filter Charts
+            </h2>
+
+            <select
+              value={filters.chartType}
+              onChange={(e) =>
+                setFilters({ ...filters, chartType: e.target.value })
+              }
+              className="px-4 py-2 border rounded-lg"
+              style={{ borderColor: "#bde8f1", backgroundColor: "#fff" }}
+            >
+              <option value="">All Types</option>
+              <option value="bar">Bar Chart</option>
+              <option value="line">Line Chart</option>
+              <option value="pie">Pie Chart</option>
+              <option value="scatter">Scatter Plot</option>
+              <option value="column3d">3D Column</option>
+            </select>
+            <select
+              value={`${filters.sortBy}-${filters.sortOrder}`}
+              onChange={(e) => {
+                const [sortBy, sortOrder] = e.target.value.split("-");
+                setFilters({ ...filters, sortBy, sortOrder });
+              }}
+              className="px-4 py-2 border rounded-lg"
+              style={{ borderColor: "#bde8f1", backgroundColor: "#fff" }}
+            >
+              <option value="createdDate-desc">Newest First</option>
+              <option value="createdDate-asc">Oldest First</option>
+              <option value="chartName-asc">Name A-Z</option>
+              <option value="chartName-desc">Name Z-A</option>
+            </select>
+          </div>
+
+          <div className="flex gap-2">
+            {/* <button onClick={handleExport} className="px-4 py-2 rounded-lg font-medium" style={{ backgroundColor: "#5b6e74", color: "#f2f2f0" }}>
+              📥 Export
+            </button> */}
+            {selectedCharts.length > 0 && (
+              <button
+                onClick={() => setShowBulkDeleteModal(true)}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#dc3545", color: "#fff" }}
+              >
+                🗑️ Delete Selected ({selectedCharts.length})
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Charts List */}
+      <div
+        className="bg-white rounded-lg shadow-lg p-6"
+        style={{ backgroundColor: "#f2f2f0" }}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold" style={{ color: "#0d0d0d" }}>
+            All Charts{" "}
+            {filteredCharts.length !== charts.length &&
+              `(${filteredCharts.length} of ${charts.length})`}
+          </h2>
+          {filteredCharts.length > 0 && (
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedCharts.length === filteredCharts.length}
+                onChange={handleSelectAll}
+              />
+              <span style={{ color: "#819fa7" }}>Select All</span>
+            </label>
+          )}
+        </div>
+
+        {filteredCharts.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-6xl mb-4" style={{ color: "#bde8f1" }}>
+              📊
+            </div>
+            <p className="text-lg" style={{ color: "#819fa7" }}>
+              {searchTerm || filters.chartType
+                ? "No charts match your search criteria"
+                : "No charts found"}
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b" style={{ borderColor: "#bde8f1" }}>
+                  <th className="text-left py-3 px-4 w-12">
+                    <input
+                      type="checkbox"
+                      checked={selectedCharts.length === filteredCharts.length}
+                      onChange={handleSelectAll}
+                    />
+                  </th>
+                  {["Chart Name", "Type", "User", "Created", "Actions"].map(
+                    (header) => (
+                      <th
+                        key={header}
+                        className="text-left py-3 px-4"
+                        style={{ color: "#0d0d0d" }}
+                      >
+                        {header}
+                      </th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredCharts.map((chart) => (
+                  <tr
+                    key={chart._id}
+                    className="border-b hover:bg-white transition-colors"
+                    style={{ borderColor: "#bde8f1" }}
+                  >
+                    <td className="py-3 px-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedCharts.includes(chart._id)}
+                        onChange={() => handleSelectChart(chart._id)}
+                      />
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="font-medium" style={{ color: "#0d0d0d" }}>
+                        {chart.chartName}
+                      </div>
+                      <div className="text-xs" style={{ color: "#819fa7" }}>
+                        X: {chart.xAxis}, Y: {chart.yAxis}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">
+                          {getChartTypeIcon(chart.chartType)}
+                        </span>
+                        <span style={{ color: "#819fa7" }}>
+                          {chart.chartType}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="font-medium" style={{ color: "#0d0d0d" }}>
+                        {chart.userId?.name || "N/A"}
+                      </div>
+                      <div className="text-xs" style={{ color: "#819fa7" }}>
+                        {chart.userId?.email}
+                      </div>
+                    </td>
+                    {/* <td className="py-3 px-4">
+                      <span style={{ color: "#819fa7" }}>{chart.fileName}</span>
+                    </td> */}
+                    <td className="py-3 px-4">
+                      <span style={{ color: "#819fa7" }}>
+                        {formatDate(chart.createdDate)}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setSelectedChart(chart)}
+                          className="px-3 py-1 text-sm rounded-lg font-medium"
+                          style={{
+                            backgroundColor: "#5b6e74",
+                            color: "#f2f2f0",
+                          }}
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleDeleteChart(chart)}
+                          className="px-3 py-1 text-sm rounded-lg font-medium"
+                          style={{ backgroundColor: "#dc3545", color: "#fff" }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Modals */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div
+            className="bg-white rounded-lg p-6 max-w-md w-full mx-4"
+            style={{ backgroundColor: "#f2f2f0" }}
+          >
+            <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>
+              Confirm Delete
+            </h3>
+            <p className="mb-6" style={{ color: "#819fa7" }}>
+              Are you sure you want to delete "{chartToDelete?.chartName}"? This
+              action cannot be undone.
+            </p>
+            <div className="flex gap-4 justify-end">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#6c757d", color: "#fff" }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#dc3545", color: "#fff" }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBulkDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div
+            className="bg-white rounded-lg p-6 max-w-md w-full mx-4"
+            style={{ backgroundColor: "#f2f2f0" }}
+          >
+            <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>
+              Confirm Bulk Delete
+            </h3>
+            <p className="mb-6" style={{ color: "#819fa7" }}>
+              Are you sure you want to delete {selectedCharts.length} selected
+              charts? This action cannot be undone.
+            </p>
+            <div className="flex gap-4 justify-end">
+              <button
+                onClick={() => setShowBulkDeleteModal(false)}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#6c757d", color: "#fff" }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmBulkDelete}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#dc3545", color: "#fff" }}
+              >
+                Delete All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedChart && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div
+            className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4"
+            style={{ backgroundColor: "#f2f2f0" }}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold" style={{ color: "#0d0d0d" }}>
+                Chart Details
+              </h3>
+              <button
+                onClick={() => setSelectedChart(null)}
+                className="text-2xl hover:opacity-70"
+                style={{ color: "#819fa7" }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="space-y-4">
+              {[
+                { label: "Chart Name", value: selectedChart.chartName },
+                { label: "Chart Type", value: selectedChart.chartType },
+                // { label: 'File Name', value: selectedChart.chartName },
+                { label: "X-Axis", value: selectedChart.xAxis },
+                { label: "Y-Axis", value: selectedChart.yAxis },
+                {
+                  label: "Created By",
+                  value: selectedChart.userId?.name || "N/A",
+                },
+                {
+                  label: "Created Date",
+                  value: formatDate(selectedChart.createdDate),
+                },
+              ].map((item, idx) => (
+                <div key={idx}>
+                  <label
+                    className="block text-sm font-medium mb-1"
+                    style={{ color: "#819fa7" }}
+                  >
+                    {item.label}
+                  </label>
+                  <p style={{ color: "#0d0d0d" }}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-4 justify-end mt-6">
+              <button
+                onClick={() => setSelectedChart(null)}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#6c757d", color: "#fff" }}
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  handleDeleteChart(selectedChart);
+                  setSelectedChart(null);
+                }}
+                className="px-4 py-2 rounded-lg font-medium"
+                style={{ backgroundColor: "#dc3545", color: "#fff" }}
+              >
+                Delete Chart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ChartAnalysis;

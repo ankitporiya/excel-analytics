@@ -27,10 +27,28 @@ router.get('/storage', auth, isAdmin, adminController.getStorageUsage);
 
 
 ///////////////////////////////////////////
-// // Chart management
-// router.get('/charts/stats', auth, isAdmin, adminController.getChartStats);
-// router.get('/charts', auth, isAdmin, adminController.getAllCharts);
-// router.get('/charts/:chartId', auth, isAdmin, adminController.getChartById);
-// router.delete('/charts/:chartId', auth, isAdmin, adminController.deleteChart);
+// Chart management
+// Chart statistics route
+router.get('/charts/stats', auth, isAdmin, adminController.getChartStats);
+
+// Get all charts with pagination and filtering
+router.get('/charts', auth, isAdmin, adminController.getAllCharts);
+
+// Get specific chart by ID
+router.get('/charts/:chartId', auth, isAdmin, adminController.getChartById);
+
+// Delete specific chart
+router.delete('/charts/:chartId', auth, isAdmin, adminController.deleteChart);
+
+// Bulk delete charts
+router.delete('/charts', auth, isAdmin, adminController.bulkDeleteCharts);
+
+// Export chart data (for backup purposes)
+// router.get('/charts/export', auth, isAdmin, adminController.exportCharts);
+
+
+
+// Get chart analytics dashboard
+router.get('/dashboard', auth, isAdmin, adminController.getDashboardOverview);
 
 module.exports = router;
