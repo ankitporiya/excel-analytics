@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getStorageUsage } from '../utils/adminApi';
-
+import FileDistributionChart from "../components/FileDistributionChart";
 const StorageDisplay = () => {
   const [storageData, setStorageData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -101,7 +101,8 @@ const StorageDisplay = () => {
             {/* File Distribution */}
             <div className="bg-white rounded-lg shadow-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
               <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>File Distribution</h2>
-              <div className="space-y-4">
+              <FileDistributionChart storageData={storageData}></FileDistributionChart>
+              {/* <div className="space-y-4">
                 <div className="flex justify-between items-center py-3 border-b" style={{ borderColor: "#bde8f1" }}>
                   <span style={{ color: "#819fa7" }}>Small (&lt; 1MB)</span>
                   <span className="font-semibold" style={{ color: "#0d0d0d" }}>
@@ -120,7 +121,7 @@ const StorageDisplay = () => {
                     {storageData.fileCount > 0 ? Math.floor(storageData.fileCount * 0.2) : 0} files
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

@@ -702,6 +702,8 @@
 // export default ChartAnalysis;
 
 import React, { useState, useEffect } from "react";
+import ChartDistributionPie from "../components/ChartDistributionPie";
+import MostActiveUsersChart from "../components/MostActiveUsersChart";
 import {
   getChartStats,
   getAllCharts,
@@ -972,9 +974,10 @@ const ChartAnalysis = () => {
           style={{ backgroundColor: "#f2f2f0" }}
         >
           <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
-            Charts by Type
+            Charts Distribution
           </h2>
-          <div className="space-y-4">
+          <ChartDistributionPie stats={stats}></ChartDistributionPie>
+          {/* <div className="space-y-4">
             {stats?.chartsByType?.map((type, index) => (
               <div
                 key={index}
@@ -992,7 +995,7 @@ const ChartAnalysis = () => {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div
@@ -1002,7 +1005,8 @@ const ChartAnalysis = () => {
           <h2 className="text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
             Most Active Users
           </h2>
-          <div className="space-y-4">
+          <MostActiveUsersChart stats = {stats}></MostActiveUsersChart>
+          {/* <div className="space-y-4">
             {stats?.topUsers?.map((user, index) => (
               <div
                 key={index}
@@ -1022,7 +1026,7 @@ const ChartAnalysis = () => {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Search and Filter Controls */}
