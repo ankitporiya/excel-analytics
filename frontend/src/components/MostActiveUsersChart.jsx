@@ -475,7 +475,7 @@ const MostActiveUsersChart = ({ stats }) => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white p-6 border-b" style={{ backgroundColor: "#f2f2f0", borderColor: '#bde8f1' }}>
+            <div className="top-0 bg-white p-6 border-b" style={{ backgroundColor: "#f2f2f0", borderColor: '#bde8f1' }}>
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>
                   All Active Users ({userData.length})
