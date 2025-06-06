@@ -398,7 +398,7 @@ const MostActiveUsersChart = ({ stats }) => {
           {remainingUsers.length > 0 && (
             <button
               onClick={() => setShowAllModal(true)}
-              className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:shadow-md text-right"
+              className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:shadow-md"
               style={{ 
                 backgroundColor: '#0088FE',
                 color: 'white',

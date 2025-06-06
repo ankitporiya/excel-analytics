@@ -14,3 +14,12 @@ logs/
 
 # Upload directories (if any)
 uploads/
+
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
