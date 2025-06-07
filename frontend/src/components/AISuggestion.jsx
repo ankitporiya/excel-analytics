@@ -12,7 +12,7 @@
 //   const [error, setError] = useState('');
 
 //   // Gemini API configuration
-//   const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyBdeEa4XsEKjxOC7FtHMpB0aLBtac-B3nY';
+//   const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 //   const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 //   // Generate chart suggestions when file is selected
