@@ -192,6 +192,15 @@
 
 // export default MainPage;
 
+
+
+
+
+
+
+
+
+
 // src/pages/MainPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
