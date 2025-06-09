@@ -48,7 +48,7 @@ const UserListModal = ({ isOpen, onClose, onUserDeleted }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden" style={{ backgroundColor: "#f2f2f0" }}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-hidden" style={{ backgroundColor: "#f0f8f0" }}>
         <div className="p-6 border-b" style={{ borderColor: "#bde8f1" }}>
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>User Management</h2>

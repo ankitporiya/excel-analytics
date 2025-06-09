@@ -309,7 +309,7 @@ const LoginPage = () => {
         }}
       >
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold" style={{ color: "#0d0d0d" }}>
+          <h2 className="text-3xl font-bold" style={{ color: "#228B22" }}>
             Welcome Back
           </h2>
           <p className="mt-2" style={{ color: "#228B22" }}>

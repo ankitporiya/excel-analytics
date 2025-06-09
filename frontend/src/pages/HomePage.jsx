@@ -326,7 +326,7 @@ const navigate = useNavigate();
                 letterSpacing: '-0.02em',
               }}
             >
-              <span className="relative inline-block hover:scale-105 transition-transform duration-500">
+              <span className="relative inline-block hover:scale-105 transition-transform duration-500" style={{ color: "#228B22" }}>
                 Excel Analytics Platform
                 <div 
                   className="absolute -inset-1 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg opacity-0 hover:opacity-30 transition-opacity duration-500 -z-10"
@@ -372,7 +372,7 @@ const navigate = useNavigate();
                onClick={() => navigate("/login")}
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg transition-all duration-500 transform hover:scale-110 hover:shadow-2xl active:scale-95 relative overflow-hidden group"
               style={{
-                backgroundColor: "#5b6e74",
+                backgroundColor: "#228B22",
                 color: "#f2f2f0",
                 fontFamily: "'Inter', system-ui, sans-serif",
                 boxShadow: '0 8px 32px rgba(91, 110, 116, 0.3)',
@@ -388,19 +388,19 @@ const navigate = useNavigate();
               onClick={() => navigate("/register")}
               className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg border-2 transition-all duration-500 transform hover:scale-110 hover:shadow-2xl active:scale-95 relative overflow-hidden group"
               style={{
-                borderColor: "#5b6e74",
-                color: "#5b6e74",
-                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                borderColor: "#228B22",
+                color: "#228B22",
+                backgroundColor: "rgba(59, 218, 10, 0.3)",
                 fontFamily: "'Inter', system-ui, sans-serif",
-                boxShadow: '0 8px 32px rgba(91, 110, 116, 0.15)',
+                boxShadow: '0 8px 32px rgba(12, 241, 81, 0.15)',
               }}
               onMouseEnter={(e) => {
                 e.target.style.backgroundColor = "#5b6e74";
                 e.target.style.color = "#f2f2f0";
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-                e.target.style.color = "#5b6e74";
+                e.target.style.backgroundColor = "rgba(90, 238, 21, 0.3)";
+                e.target.style.color = "#228B22";
               }}
             >
               <span className="relative z-10">Register</span>

@@ -133,7 +133,7 @@ const FileDistributionChart = ({ storageData }) => {
   const storageInfo = calculateActualStorageDistribution();
 
   return (
-    <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
+    <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f0f8f0" }}>
 
       
       <div className="flex flex-col lg:flex-row items-center gap-8">

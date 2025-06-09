@@ -390,7 +390,7 @@ const MostActiveUsersChart = ({ stats }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
+      <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f0f8f0" }}>
         <div className="flex items-center justify-between mb-6">
           {/* <h2 className="text-xl font-bold" style={{ color: "#0d0d0d" }}>
             Most Active Users
@@ -468,15 +468,16 @@ const MostActiveUsersChart = ({ stats }) => {
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onClick={() => setShowAllModal(false)}
+          
         >
           <div 
             className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto"
-            style={{ backgroundColor: "#f2f2f0" }}
+            style={{ backgroundColor: "#f0f8f0" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div className="top-0 bg-white p-6 border-b" style={{ backgroundColor: "#f2f2f0", borderColor: '#bde8f1' }}>
-              <div className="flex items-center justify-between">
+            {/* Modal Header f0f8f0*/}
+            <div className="top-0 bg-white p-6 border-b" style={{ backgroundColor: "#f0f8f0", borderColor: '#bde8f1' }}>
+              <div className="flex items-center justify-between" >
                 <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>
                   All Active Users ({userData.length})
                 </h2>
@@ -497,8 +498,8 @@ const MostActiveUsersChart = ({ stats }) => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6">
-              <div className="space-y-4">
+            <div className="p-6" sstyle={{ backgroundColor: "#f0f8f0" }}>
+              <div className="space-y-4" style={{ backgroundColor: "#f0f8f0" }}>
                 {userData.map((user, index) => (
                   <UserRow key={index} user={user} index={index} isModal={true} />
                 ))}

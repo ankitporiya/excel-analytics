@@ -701,18 +701,6 @@
 
 // export default ChartAnalysis;
 
-
-
-
-
-
-
-
-
-
-
-
-
 // // maim
 // import React, { useState, useEffect } from "react";
 // import ChartDistributionPie from "../components/ChartDistributionPie";
@@ -1388,34 +1376,8 @@
 
 // export default ChartAnalysis;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import ChartDistributionPie from "../components/ChartDistributionPie";
 import MostActiveUsersChart from "../components/MostActiveUsersChart";
 import {
@@ -1442,7 +1404,7 @@ const ChartAnalysis = () => {
     sortOrder: "desc",
   });
   const [error, setError] = useState(null);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const chartsPerPage = 10;
@@ -1555,14 +1517,18 @@ const ChartAnalysis = () => {
 
   const handleSelectAll = () => {
     const currentChartIds = currentCharts.map((chart) => chart._id);
-    const allCurrentSelected = currentChartIds.every(id => selectedCharts.includes(id));
-    
+    const allCurrentSelected = currentChartIds.every((id) =>
+      selectedCharts.includes(id)
+    );
+
     if (allCurrentSelected) {
       // Unselect all current page charts
-      setSelectedCharts(prev => prev.filter(id => !currentChartIds.includes(id)));
+      setSelectedCharts((prev) =>
+        prev.filter((id) => !currentChartIds.includes(id))
+      );
     } else {
       // Select all current page charts
-      setSelectedCharts(prev => [...new Set([...prev, ...currentChartIds])]);
+      setSelectedCharts((prev) => [...new Set([...prev, ...currentChartIds])]);
     }
   };
 
@@ -1636,10 +1602,56 @@ const ChartAnalysis = () => {
     );
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+    hover: {
+      scale: 1.02,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+  };
+
   return (
     <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
       <div className="mb-4 sm:mb-6">
-        <h2 className="text-xl sm:text-2xl font-bold" style={{ color: "#0d0d0d" }}>
+        <h2
+          className="text-xl sm:text-2xl font-bold"
+          style={{ color: "#0d0d0d" }}
+        >
           Chart Analysis Dashboard
         </h2>
         <p className="text-xs sm:text-sm mt-1" style={{ color: "#819fa7" }}>
@@ -1649,7 +1661,10 @@ const ChartAnalysis = () => {
 
       {/* Statistics Cards */}
       {stats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+        <motion.div
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8"
+          variants={containerVariants}
+        >
           {[
             { label: "Total Charts", value: stats.totalCharts, icon: "📊" },
             {
@@ -1669,10 +1684,12 @@ const ChartAnalysis = () => {
               icon: "👥",
             },
           ].map((stat, idx) => (
-            <div
+            <motion.div
               key={idx}
               className="bg-white rounded-lg shadow-lg p-3 sm:p-6"
-              style={{ backgroundColor: "#f2f2f0" }}
+              style={{ backgroundColor: "#f0f8f0" }}
+              variants={cardVariants}
+              whileHover="hover"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -1694,45 +1711,63 @@ const ChartAnalysis = () => {
                     </p>
                   )}
                 </div>
-                <div className="text-2xl sm:text-3xl" style={{ color: "#bde8f1" }}>
+                <div
+                  className="text-2xl sm:text-3xl"
+                  style={{ color: "#bde8f1" }}
+                >
                   {stat.icon}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
 
       {/* Chart Type Distribution and Top Users */}
-      <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
-        <div
+      <motion.div
+        className="grid lg:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8"
+        variants={containerVariants}
+      >
+        <motion.div
           className="bg-white rounded-lg shadow-lg p-4 sm:p-6"
-          style={{ backgroundColor: "#f2f2f0" }}
+          style={{ backgroundColor: "#f0f8f0" }}
+          variants={cardVariants}
+          whileHover="hover"
         >
-          <h2 className="text-lg sm:text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
+          <h2
+            className="text-lg sm:text-xl font-bold mb-4"
+            style={{ color: "#0d0d0d" }}
+          >
             Charts Distribution
           </h2>
           <ChartDistributionPie stats={stats}></ChartDistributionPie>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
           className="bg-white rounded-lg shadow-lg p-4 sm:p-6"
-          style={{ backgroundColor: "#f2f2f0" }}
+          style={{ backgroundColor: "#f0f8f0" }}
+          // variants={cardVariants}
+          whileHover="hover"
         >
-          <h2 className="text-lg sm:text-xl font-bold mb-4" style={{ color: "#0d0d0d" }}>
+          <h2
+            className="text-lg sm:text-xl font-bold mb-4"
+            style={{ color: "#0d0d0d" }}
+          >
             Most Active Users
           </h2>
-          <MostActiveUsersChart stats = {stats}></MostActiveUsersChart>
-        </div>
-      </div>
+          <MostActiveUsersChart stats={stats}></MostActiveUsersChart>
+        </motion.div>
+      </motion.div>
 
       {/* Search and Filter Controls */}
-      <div
+      <motion.div
         className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8"
-        style={{ backgroundColor: "#f2f2f0" }}
+        style={{ backgroundColor: "#f0f8f0" }}
+        variants={cardVariants}
+        whileHover="hover"
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <motion.div className="flex flex-col gap-4">
+          <motion.div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <h2
               className="text-lg sm:text-xl font-bold"
               style={{ color: "#0d0d0d" }}
@@ -1771,7 +1806,7 @@ const ChartAnalysis = () => {
                 <option value="chartName-desc">Name Z-A</option>
               </select>
             </div>
-          </div>
+          </motion.div>
 
           {selectedCharts.length > 0 && (
             <div className="flex justify-end">
@@ -1784,16 +1819,23 @@ const ChartAnalysis = () => {
               </button>
             </div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Charts List */}
-      <div
+      <motion.div
         className="bg-white rounded-lg shadow-lg p-4 sm:p-6"
-        style={{ backgroundColor: "#f2f2f0" }}
+        style={{ backgroundColor: "#f0f8f0" }}
+        variants={cardVariants}
+            whileHover="hover"
       >
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-          <h2 className="text-lg sm:text-xl font-bold" style={{ color: "#0d0d0d" }}>
+        <motion.div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2"
+        
+        >
+          <h2
+            className="text-lg sm:text-xl font-bold"
+            style={{ color: "#0d0d0d" }}
+          >
             All Charts{" "}
             {filteredCharts.length !== charts.length &&
               `(${filteredCharts.length} of ${charts.length})`}
@@ -1802,17 +1844,24 @@ const ChartAnalysis = () => {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                checked={currentCharts.every(chart => selectedCharts.includes(chart._id))}
+                checked={currentCharts.every((chart) =>
+                  selectedCharts.includes(chart._id)
+                )}
                 onChange={handleSelectAll}
               />
-              <span className="text-sm" style={{ color: "#819fa7" }}>Select All</span>
+              <span className="text-sm" style={{ color: "#819fa7" }}>
+                Select All
+              </span>
             </label>
           )}
-        </div>
+        </motion.div>
 
         {filteredCharts.length === 0 ? (
           <div className="text-center py-8">
-            <div className="text-4xl sm:text-6xl mb-4" style={{ color: "#bde8f1" }}>
+            <div
+              className="text-4xl sm:text-6xl mb-4"
+              style={{ color: "#bde8f1" }}
+            >
               📊
             </div>
             <p className="text-base sm:text-lg" style={{ color: "#819fa7" }}>
@@ -1830,7 +1879,9 @@ const ChartAnalysis = () => {
                     <th className="text-left py-3 px-2 w-12">
                       <input
                         type="checkbox"
-                        checked={currentCharts.every(chart => selectedCharts.includes(chart._id))}
+                        checked={currentCharts.every((chart) =>
+                          selectedCharts.includes(chart._id)
+                        )}
                         onChange={handleSelectAll}
                       />
                     </th>
@@ -1862,7 +1913,10 @@ const ChartAnalysis = () => {
                         />
                       </td>
                       <td className="py-3 px-2">
-                        <div className="font-medium text-sm sm:text-base" style={{ color: "#0d0d0d" }}>
+                        <div
+                          className="font-medium text-sm sm:text-base"
+                          style={{ color: "#0d0d0d" }}
+                        >
                           {chart.chartName}
                         </div>
                         <div className="text-xs" style={{ color: "#819fa7" }}>
@@ -1874,13 +1928,19 @@ const ChartAnalysis = () => {
                           <span className="text-base sm:text-lg">
                             {getChartTypeIcon(chart.chartType)}
                           </span>
-                          <span className="text-sm" style={{ color: "#819fa7" }}>
+                          <span
+                            className="text-sm"
+                            style={{ color: "#819fa7" }}
+                          >
                             {chart.chartType}
                           </span>
                         </div>
                       </td>
                       <td className="py-3 px-2">
-                        <div className="font-medium text-sm" style={{ color: "#0d0d0d" }}>
+                        <div
+                          className="font-medium text-sm"
+                          style={{ color: "#0d0d0d" }}
+                        >
                           {chart.userId?.name || "N/A"}
                         </div>
                         <div className="text-xs" style={{ color: "#819fa7" }}>
@@ -1888,7 +1948,10 @@ const ChartAnalysis = () => {
                         </div>
                       </td>
                       <td className="py-3 px-2">
-                        <span className="text-xs sm:text-sm" style={{ color: "#819fa7" }}>
+                        <span
+                          className="text-xs sm:text-sm"
+                          style={{ color: "#819fa7" }}
+                        >
                           {formatDate(chart.createdDate)}
                         </span>
                       </td>
@@ -1898,8 +1961,8 @@ const ChartAnalysis = () => {
                             onClick={() => setSelectedChart(chart)}
                             className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg font-medium"
                             style={{
-                              backgroundColor: "#5b6e74",
-                              color: "#f2f2f0",
+                              backgroundColor: "#228B22",
+                              color: "#f0f8f0",
                             }}
                           >
                             View
@@ -1907,7 +1970,10 @@ const ChartAnalysis = () => {
                           <button
                             onClick={() => handleDeleteChart(chart)}
                             className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg font-medium"
-                            style={{ backgroundColor: "#dc3545", color: "#fff" }}
+                            style={{
+                              backgroundColor: "#dc3545",
+                              color: "#fff",
+                            }}
                           >
                             Delete
                           </button>
@@ -1923,22 +1989,25 @@ const ChartAnalysis = () => {
             {totalPages > 1 && (
               <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
                 <div className="text-sm" style={{ color: "#819fa7" }}>
-                  Showing {startIndex + 1} to {Math.min(endIndex, filteredCharts.length)} of {filteredCharts.length} charts
+                  Showing {startIndex + 1} to{" "}
+                  {Math.min(endIndex, filteredCharts.length)} of{" "}
+                  {filteredCharts.length} charts
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handlePrevious}
                     disabled={currentPage === 1}
                     className="px-3 py-2 rounded-lg font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    style={{ 
-                      backgroundColor: currentPage === 1 ? "#6c757d" : "#5b6e74", 
-                      color: "#f2f2f0" 
+                    style={{
+                      backgroundColor:
+                        currentPage === 1 ? "#228B22" : "#228B22",
+                      color: "#f2f2f0",
                     }}
                   >
                     Previous
                   </button>
-                  
+
                   <div className="flex gap-1">
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum;
@@ -1951,15 +2020,17 @@ const ChartAnalysis = () => {
                       } else {
                         pageNum = currentPage - 2 + i;
                       }
-                      
+
                       return (
                         <button
                           key={pageNum}
                           onClick={() => handlePageChange(pageNum)}
                           className="w-8 h-8 rounded text-sm font-medium"
                           style={{
-                            backgroundColor: currentPage === pageNum ? "#5b6e74" : "#bde8f1",
-                            color: currentPage === pageNum ? "#f2f2f0" : "#0d0d0d",
+                            backgroundColor:
+                              currentPage === pageNum ? "#228B22" : "#bde8f1",
+                            color:
+                              currentPage === pageNum ? "#f2f2f0" : "#0d0d0d",
                           }}
                         >
                           {pageNum}
@@ -1967,14 +2038,15 @@ const ChartAnalysis = () => {
                       );
                     })}
                   </div>
-                  
+
                   <button
                     onClick={handleNext}
                     disabled={currentPage === totalPages}
                     className="px-3 py-2 rounded-lg font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    style={{ 
-                      backgroundColor: currentPage === totalPages ? "#6c757d" : "#5b6e74", 
-                      color: "#f2f2f0" 
+                    style={{
+                      backgroundColor:
+                        currentPage === totalPages ? "#228B22" : "#228B22",
+                      color: "#f2f2f0",
                     }}
                   >
                     Next
@@ -1984,7 +2056,7 @@ const ChartAnalysis = () => {
             )}
           </>
         )}
-      </div>
+      </motion.div>
 
       {/* Modals */}
       {showDeleteModal && (
@@ -1996,7 +2068,10 @@ const ChartAnalysis = () => {
             <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>
               Confirm Delete
             </h3>
-            <p className="mb-6 text-sm sm:text-base" style={{ color: "#819fa7" }}>
+            <p
+              className="mb-6 text-sm sm:text-base"
+              style={{ color: "#819fa7" }}
+            >
               Are you sure you want to delete "{chartToDelete?.chartName}"? This
               action cannot be undone.
             </p>
@@ -2029,7 +2104,10 @@ const ChartAnalysis = () => {
             <h3 className="text-lg font-bold mb-4" style={{ color: "#0d0d0d" }}>
               Confirm Bulk Delete
             </h3>
-            <p className="mb-6 text-sm sm:text-base" style={{ color: "#819fa7" }}>
+            <p
+              className="mb-6 text-sm sm:text-base"
+              style={{ color: "#819fa7" }}
+            >
               Are you sure you want to delete {selectedCharts.length} selected
               charts? This action cannot be undone.
             </p>
@@ -2057,7 +2135,7 @@ const ChartAnalysis = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div
             className="bg-white rounded-lg p-4 sm:p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            style={{ backgroundColor: "#f2f2f0" }}
+            style={{ backgroundColor: "#f0f8f0" }}
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold" style={{ color: "#0d0d0d" }}>
@@ -2093,7 +2171,12 @@ const ChartAnalysis = () => {
                   >
                     {item.label}
                   </label>
-                  <p className="text-sm sm:text-base" style={{ color: "#0d0d0d" }}>{item.value}</p>
+                  <p
+                    className="text-sm sm:text-base"
+                    style={{ color: "#0d0d0d" }}
+                  >
+                    {item.value}
+                  </p>
                 </div>
               ))}
             </div>
@@ -2124,3 +2207,5 @@ const ChartAnalysis = () => {
 };
 
 export default ChartAnalysis;
+
+//With Animation

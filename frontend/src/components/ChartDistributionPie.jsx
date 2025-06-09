@@ -93,7 +93,7 @@ const ChartDistributionPie = ({ stats }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f2f2f0" }}>
+    <div className="bg-white rounded-lg p-6" style={{ backgroundColor: "#f0f8f0" }}>
 
       
       <div className="h-96">

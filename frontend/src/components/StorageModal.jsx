@@ -205,8 +205,8 @@ const StorageModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden" style={{ backgroundColor: "#f2f2f0" }}>
-        <div className="p-6 border-b" style={{ borderColor: "#bde8f1" }}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden" style={{ backgroundColor: "#f0f8f0" }}>
+        <div className="p-6 border-b" style={{ backgroundColor: "#f0f8f0" }}>
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold" style={{ color: "#0d0d0d" }}>Storage Usage</h2>
             <button
@@ -229,9 +229,9 @@ const StorageModal = ({ isOpen, onClose }) => {
             <div className="space-y-6">
               {/* Storage Overview */}
               <div className="grid md:grid-cols-2 gap-4">
-                <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
-                  <div className="flex items-center justify-between">
-                    <div>
+                <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
+                  <div className="flex items-center justify-between" style={{ backgroundColor: "#f0f8f0" }}>
+                    <div style={{ backgroundColor: "#f0f8f0" }}>
                       <p className="text-sm font-medium" style={{ color: "#819fa7" }}>
                         Total Storage Used
                       </p>
@@ -245,7 +245,7 @@ const StorageModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+                <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium" style={{ color: "#819fa7" }}>
@@ -263,7 +263,7 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Storage Details */}
-              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: "#0d0d0d" }}>
                   Storage Details
                 </h3>
@@ -293,7 +293,7 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Storage Progress Bar */}
-              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: "#0d0d0d" }}>
                   Storage Usage Visualization
                 </h3>
@@ -315,7 +315,7 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Additional Storage Statistics */}
-              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: "#0d0d0d" }}>
                   Storage Statistics
                 </h3>
@@ -343,7 +343,7 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Storage Breakdown */}
-              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: "#0d0d0d" }}>
                   File Size Distribution
                 </h3>
@@ -370,7 +370,7 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Storage Recommendations */}
-              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#fff" }}>
+              <div className="bg-white rounded-lg shadow p-4" style={{ backgroundColor: "#f0f8f0" }}>
                 <h3 className="text-lg font-semibold mb-4" style={{ color: "#0d0d0d" }}>
                   Recommendations
                 </h3>
@@ -412,14 +412,14 @@ const StorageModal = ({ isOpen, onClose }) => {
                   onClick={fetchStorageUsage}
                   className="px-6 py-2 rounded-lg font-semibold transition-colors duration-300"
                   style={{
-                    backgroundColor: "#5b6e74",
-                    color: "#f2f2f0",
+                    backgroundColor: "#228B22",
+                    color: "#f0f8f0",
                   }}
                   onMouseEnter={(e) =>
-                    (e.target.style.backgroundColor = "#819fa7")
+                    (e.target.style.backgroundColor = "#32CD32")
                   }
                   onMouseLeave={(e) =>
-                    (e.target.style.backgroundColor = "#5b6e74")
+                    (e.target.style.backgroundColor = "#228B22")
                   }
                 >
                   Refresh Storage Info
