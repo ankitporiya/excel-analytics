@@ -1,62 +1,27 @@
-// // components/ChartDisplay.jsx
-// import React from 'react';
-// import { Bar, Line, Pie, Scatter } from 'react-chartjs-2';
-// import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, LineElement, ArcElement, Tooltip, Legend } from 'chart.js';
-
-// ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, LineElement, ArcElement, Tooltip, Legend);
-
-// const ChartDisplay = ({ chart }) => {
-//   const chartData = chart?.chartData || {};
-//   const chartType = chart?.chartType;
-
-//   if (!chartData || !chartType) return <div>No chart data available</div>;
-
-//   const components = {
-//     bar: Bar,
-//     line: Line,
-//     pie: Pie,
-//     scatter: Scatter
-//   };
-
-//   const ChartComponent = components[chartType] || Bar;
-
-//   return (
-//     <div className="w-full max-w-4xl mx-auto py-4">
-//       <h2 className="text-xl font-bold mb-2 text-center">{chart.chartName}</h2>
-//       <ChartComponent data={chartData} options={{ responsive: true }} />
-//     </div>
-//   );
-// };
-
-// export default ChartDisplay;
-
-
-
-
 // components/ChartDisplay.jsx
-import React, { useRef, useEffect } from 'react';
-import { Bar, Line, Pie, Scatter } from 'react-chartjs-2';
-import { 
-  Chart as ChartJS, 
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
-  BarElement, 
-  LineElement, 
-  ArcElement, 
-  Tooltip, 
+import React, { useRef, useEffect } from "react";
+import { Bar, Line, Pie, Scatter } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  LineElement,
+  ArcElement,
+  Tooltip,
   Legend,
-  Title
-} from 'chart.js';
+  Title,
+} from "chart.js";
 
 ChartJS.register(
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
-  BarElement, 
-  LineElement, 
-  ArcElement, 
-  Tooltip, 
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  LineElement,
+  ArcElement,
+  Tooltip,
   Legend,
   Title
 );
@@ -85,7 +50,7 @@ const ChartDisplay = ({ chart }) => {
     line: Line,
     pie: Pie,
     scatter: Scatter,
-    column3d: Bar // Fallback to regular bar for 3D column
+    column3d: Bar, // Fallback to regular bar for 3D column
   };
 
   const ChartComponent = components[chartType] || Bar;
@@ -96,82 +61,90 @@ const ChartDisplay = ({ chart }) => {
     maintainAspectRatio: false,
     animation: {
       duration: 1000,
-      easing: 'easeOutQuart'
+      easing: "easeOutQuart",
     },
     plugins: {
       title: {
         display: true,
-        text: chart.chartName || 'Chart',
+        text: chart.chartName || "Chart",
         font: {
           size: 18,
-          weight: 'bold'
+          weight: "bold",
         },
-        padding: 20
+        padding: 20,
       },
       legend: {
         display: true,
-        position: 'top',
+        position: "top",
         labels: {
           usePointStyle: true,
           padding: 20,
           font: {
-            size: 12
-          }
-        }
+            size: 12,
+          },
+        },
       },
       tooltip: {
-        backgroundColor: 'rgba(0,0,0,0.8)',
-        titleColor: 'white',
-        bodyColor: 'white',
-        borderColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: "rgba(0,0,0,0.8)",
+        titleColor: "white",
+        bodyColor: "white",
+        borderColor: "rgba(255,255,255,0.1)",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: true,
         callbacks: {
-          title: function(context) {
+          title: function (context) {
             return context[0].label;
           },
-          label: function(context) {
-            const label = context.dataset.label || '';
-            const value = typeof context.parsed.y !== 'undefined' ? context.parsed.y : context.parsed;
-            return `${label}: ${typeof value === 'number' ? value.toLocaleString() : value}`;
-          }
-        }
-      }
-    },
-    scales: chartType !== 'pie' ? {
-      x: {
-        display: true,
-        title: {
-          display: true,
-          text: chart.xAxis || 'X Axis',
-          font: {
-            size: 14,
-            weight: 'bold'
-          }
+          label: function (context) {
+            const label = context.dataset.label || "";
+            const value =
+              typeof context.parsed.y !== "undefined"
+                ? context.parsed.y
+                : context.parsed;
+            return `${label}: ${
+              typeof value === "number" ? value.toLocaleString() : value
+            }`;
+          },
         },
-        grid: {
-          display: true,
-          color: 'rgba(0,0,0,0.1)'
-        }
       },
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: chart.yAxis || 'Y Axis',
-          font: {
-            size: 14,
-            weight: 'bold'
+    },
+    scales:
+      chartType !== "pie"
+        ? {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: chart.xAxis || "X Axis",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                display: true,
+                color: "rgba(0,0,0,0.1)",
+              },
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: chart.yAxis || "Y Axis",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                display: true,
+                color: "rgba(0,0,0,0.1)",
+              },
+              beginAtZero: true,
+            },
           }
-        },
-        grid: {
-          display: true,
-          color: 'rgba(0,0,0,0.1)'
-        },
-        beginAtZero: true
-      }
-    } : undefined
+        : undefined,
   };
 
   // Enhanced chart data with better colors and styling
@@ -179,21 +152,26 @@ const ChartDisplay = ({ chart }) => {
     ...chartData,
     datasets: chartData.datasets.map((dataset, index) => ({
       ...dataset,
-      backgroundColor: chartType === 'pie' 
-        ? generatePieColors(chartData.labels.length)
-        : generateBarColors(chartData.labels.length, index),
-      borderColor: chartType === 'line' 
-        ? generateLineColors(index)
-        : (chartType === 'pie' ? undefined : 'rgba(54, 162, 235, 0.8)'),
-      borderWidth: chartType === 'pie' ? 2 : (chartType === 'line' ? 3 : 1),
-      tension: chartType === 'line' ? 0.4 : undefined,
-      fill: chartType === 'line' ? false : undefined,
-      pointBackgroundColor: chartType === 'line' ? generateLineColors(index) : undefined,
-      pointBorderColor: chartType === 'line' ? '#fff' : undefined,
-      pointBorderWidth: chartType === 'line' ? 2 : undefined,
-      pointRadius: chartType === 'line' ? 5 : undefined,
-      pointHoverRadius: chartType === 'line' ? 7 : undefined
-    }))
+      backgroundColor:
+        chartType === "pie"
+          ? generatePieColors(chartData.labels.length)
+          : generateBarColors(chartData.labels.length, index),
+      borderColor:
+        chartType === "line"
+          ? generateLineColors(index)
+          : chartType === "pie"
+          ? undefined
+          : "rgba(54, 162, 235, 0.8)",
+      borderWidth: chartType === "pie" ? 2 : chartType === "line" ? 3 : 1,
+      tension: chartType === "line" ? 0.4 : undefined,
+      fill: chartType === "line" ? false : undefined,
+      pointBackgroundColor:
+        chartType === "line" ? generateLineColors(index) : undefined,
+      pointBorderColor: chartType === "line" ? "#fff" : undefined,
+      pointBorderWidth: chartType === "line" ? 2 : undefined,
+      pointRadius: chartType === "line" ? 5 : undefined,
+      pointHoverRadius: chartType === "line" ? 7 : undefined,
+    })),
   };
 
   return (
@@ -221,10 +199,14 @@ const ChartDisplay = ({ chart }) => {
       </div>
 
       {/* Chart Container */}
-      <div id="chart-container" className="relative bg-white p-4 rounded-lg shadow-sm" style={{ height: '500px' }}>
-        <ChartComponent 
+      <div
+        id="chart-container"
+        className="relative bg-white p-4 rounded-lg shadow-sm"
+        style={{ height: "500px" }}
+      >
+        <ChartComponent
           ref={chartRef}
-          data={enhancedChartData} 
+          data={enhancedChartData}
           options={chartOptions}
         />
       </div>
@@ -234,7 +216,9 @@ const ChartDisplay = ({ chart }) => {
         <h4 className="font-semibold text-blue-800 mb-2">Quick Stats</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           {chartData.datasets.map((dataset, index) => {
-            const values = dataset.data.filter(val => typeof val === 'number');
+            const values = dataset.data.filter(
+              (val) => typeof val === "number"
+            );
             const sum = values.reduce((a, b) => a + b, 0);
             const avg = values.length > 0 ? sum / values.length : 0;
             const max = Math.max(...values);
@@ -242,7 +226,9 @@ const ChartDisplay = ({ chart }) => {
 
             return (
               <div key={index}>
-                <span className="font-semibold text-blue-600">{dataset.label}:</span>
+                <span className="font-semibold text-blue-600">
+                  {dataset.label}:
+                </span>
                 <div className="text-xs text-blue-800">
                   <p>Total: {sum.toLocaleString()}</p>
                   <p>Average: {avg.toFixed(2)}</p>
@@ -261,33 +247,45 @@ const ChartDisplay = ({ chart }) => {
 // Helper functions for generating colors
 const generatePieColors = (count) => {
   const colors = [
-    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', 
-    '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384',
-    '#36A2EB', '#FFCE56', '#9966FF', '#FF9F40', '#C9CBCF'
+    "#FF6384",
+    "#36A2EB",
+    "#FFCE56",
+    "#4BC0C0",
+    "#9966FF",
+    "#FF9F40",
+    "#FF6384",
+    "#C9CBCF",
+    "#4BC0C0",
+    "#FF6384",
+    "#36A2EB",
+    "#FFCE56",
+    "#9966FF",
+    "#FF9F40",
+    "#C9CBCF",
   ];
   return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
 };
 
 const generateBarColors = (count, datasetIndex = 0) => {
   const colorSets = [
-    'rgba(54, 162, 235, 0.6)',
-    'rgba(255, 99, 132, 0.6)',
-    'rgba(255, 206, 86, 0.6)',
-    'rgba(75, 192, 192, 0.6)',
-    'rgba(153, 102, 255, 0.6)',
-    'rgba(255, 159, 64, 0.6)'
+    "rgba(54, 162, 235, 0.6)",
+    "rgba(255, 99, 132, 0.6)",
+    "rgba(255, 206, 86, 0.6)",
+    "rgba(75, 192, 192, 0.6)",
+    "rgba(153, 102, 255, 0.6)",
+    "rgba(255, 159, 64, 0.6)",
   ];
   return Array(count).fill(colorSets[datasetIndex % colorSets.length]);
 };
 
 const generateLineColors = (datasetIndex = 0) => {
   const colors = [
-    'rgb(54, 162, 235)',
-    'rgb(255, 99, 132)',
-    'rgb(255, 206, 86)',
-    'rgb(75, 192, 192)',
-    'rgb(153, 102, 255)',
-    'rgb(255, 159, 64)'
+    "rgb(54, 162, 235)",
+    "rgb(255, 99, 132)",
+    "rgb(255, 206, 86)",
+    "rgb(75, 192, 192)",
+    "rgb(153, 102, 255)",
+    "rgb(255, 159, 64)",
   ];
   return colors[datasetIndex % colors.length];
 };

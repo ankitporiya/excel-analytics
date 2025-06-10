@@ -1,195 +1,98 @@
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import api from '../utils/api';
-
-// // Upload file
-// export const uploadFile = createAsyncThunk(
-//   'files/upload',
-//   async (formData, { rejectWithValue }) => {
-//     try {
-//       const response = await api.post('/files/upload', formData, {
-//         headers: { 'Content-Type': 'multipart/form-data' }
-//       });
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data.message);
-//     }
-//   }
-// );
-
-// // Get user files
-// export const getUserFiles = createAsyncThunk(
-//   'files/getUserFiles',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await api.get('/files');
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data.message);
-//     }
-//   }
-// );
-
-// // Get file data
-// export const getFileData = createAsyncThunk(
-//   'files/getFileData',
-//   async (fileId, { rejectWithValue }) => {
-//     try {
-//       const response = await api.get(`/files/${fileId}`);
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data.message);
-//     }
-//   }
-// );
-
-// const fileSlice = createSlice({
-//   name: 'files',
-//   initialState: {
-//     files: [],
-//     currentFile: null,
-//     loading: false,
-//     error: null,
-//     uploadSuccess: false
-//   },
-//   reducers: {
-//     clearError: (state) => {
-//       state.error = null;
-//     },
-//     clearUploadSuccess: (state) => {
-//       state.uploadSuccess = false;
-//     }
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       // Upload file
-//       .addCase(uploadFile.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(uploadFile.fulfilled, (state, action) => {
-//         state.loading = false;
-//         state.uploadSuccess = true;
-//         state.files.unshift(action.payload.file);
-//       })
-//       .addCase(uploadFile.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload;
-//       })
-//       // Get user files
-//       .addCase(getUserFiles.fulfilled, (state, action) => {
-//         state.files = action.payload;
-//       })
-//       // Get file data
-//       .addCase(getFileData.fulfilled, (state, action) => {
-//         state.currentFile = action.payload;
-//       });
-//   }
-// });
-
-// export const { clearError, clearUploadSuccess } = fileSlice.actions;
-// export default fileSlice.reducer;
-
-
-
-
-
-
-
-
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Helper to get token and create headers with Authorization
 const getAuthHeaders = (isFormData = false) => {
-  const token = localStorage.getItem('token'); // adjust if you store token elsewhere
+  const token = localStorage.getItem("token"); // adjust if you store token elsewhere
   return {
-    'Authorization': token ? `Bearer ${token}` : '',
-    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+    Authorization: token ? `Bearer ${token}` : "",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
   };
 };
 
 // Upload file
 export const uploadFile = createAsyncThunk(
-  'files/upload',
+  "files/upload",
   async (formData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      console.log('Sending token:', token); // ✅ Debug log
+      const token = localStorage.getItem("token");
+      console.log("Sending token:", token); // ✅ Debug log
 
-      const response = await fetch('http://localhost:5000/api/files/upload', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/api/files/upload", {
+        method: "POST",
         headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: token ? `Bearer ${token}` : "",
         },
         body: formData,
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        return rejectWithValue(errorData.message || 'Upload failed');
+        return rejectWithValue(errorData.message || "Upload failed");
       }
 
       const data = await response.json();
       return data;
-
     } catch (error) {
-      return rejectWithValue(error.message || 'Upload failed');
+      return rejectWithValue(error.message || "Upload failed");
     }
   }
 );
 
-
-
 // Get user files
 export const getUserFiles = createAsyncThunk(
-  'files/getUserFiles',
+  "files/getUserFiles",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:5000/api/files', {
+      const response = await fetch("http://localhost:5000/api/files", {
         headers: getAuthHeaders(),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        return rejectWithValue(errorData.message || 'Failed to fetch files');
+        return rejectWithValue(errorData.message || "Failed to fetch files");
       }
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || 'Failed to fetch files');
+      return rejectWithValue(error.message || "Failed to fetch files");
     }
   }
 );
 
 // Get file data
 export const getFileData = createAsyncThunk(
-  'files/getFileData',
+  "files/getFileData",
   async (fileId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/files/${fileId}`, {
-        headers: getAuthHeaders(),
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/files/${fileId}`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        return rejectWithValue(errorData.message || 'Failed to fetch file data');
+        return rejectWithValue(
+          errorData.message || "Failed to fetch file data"
+        );
       }
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message || 'Failed to fetch file data');
+      return rejectWithValue(error.message || "Failed to fetch file data");
     }
   }
 );
 
 const fileSlice = createSlice({
-  name: 'files',
+  name: "files",
   initialState: {
     files: [],
     currentFile: null,
     loading: false,
     error: null,
-    uploadSuccess: false
+    uploadSuccess: false,
   },
   reducers: {
     clearError: (state) => {
@@ -197,7 +100,7 @@ const fileSlice = createSlice({
     },
     clearUploadSuccess: (state) => {
       state.uploadSuccess = false;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -223,7 +126,7 @@ const fileSlice = createSlice({
       .addCase(getFileData.fulfilled, (state, action) => {
         state.currentFile = action.payload;
       });
-  }
+  },
 });
 
 export const { clearError, clearUploadSuccess } = fileSlice.actions;

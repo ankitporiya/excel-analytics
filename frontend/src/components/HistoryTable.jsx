@@ -1,76 +1,3 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// const HistoryTable = ({ charts, onViewChart }) => {
-//   const navigate = useNavigate();
-//   if (!Array.isArray(charts)) {
-//     return <p className="text-center text-gray-600">No charts available.</p>;
-//   }
-
-//   return (
-//     <div className="overflow-x-auto px-6 mx-auto max-w-4xl">
-//       <button
-//         onClick={() => navigate(-1)}
-//         className="mb-4 px-4 py-2 bg-[#5b6e74] text-white rounded-xl transition duration-300 hover:bg-[#819fa7]"
-//       >
-//         Go Back
-//       </button>
-
-//       <table className="min-w-full bg-transparent border border-black border-collapse" >
-//         <thead>
-//           <tr>
-//             <th className="px-4 py-2 border border-black">Chart Name</th>
-//             <th className="px-4 py-2 border border-black">Type</th>
-//             {/* <th className="px-4 py-2 border">File</th> */}
-//             <th className="px-4 py-2 border-black">Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {charts.map((chart) => (
-//             <tr key={chart._id} className="text-center">
-//               <td className="border border-black px-4 py-2">{chart.chartName}</td>
-//               <td className="border border-black px-4 py-2">{chart.chartType}</td>
-//               {/* <td className="border px-4 py-2">{chart.fileName}</td> */}
-//               <td className="border border-black px-4 py-2">
-//                 <button
-//                   className="text-blue-600 hover:underline"
-//                   onClick={() => onViewChart(chart)}
-//                 >
-//                   View
-//                 </button>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default HistoryTable;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //with amination
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -78,7 +5,7 @@ import { motion } from "framer-motion";
 
 const HistoryTable = ({ charts, onViewChart }) => {
   const navigate = useNavigate();
-  
+
   if (!Array.isArray(charts)) {
     return <p className="text-center text-gray-600">No charts available.</p>;
   }
@@ -90,9 +17,9 @@ const HistoryTable = ({ charts, onViewChart }) => {
       y: 0,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const rowVariants = {
@@ -100,24 +27,24 @@ const HistoryTable = ({ charts, onViewChart }) => {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.4 }
+      transition: { duration: 0.4 },
     },
     hover: {
       scale: 1.02,
       backgroundColor: "#f0f8f0",
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
   const buttonVariants = {
     hover: {
       scale: 1.05,
       backgroundColor: "#32CD32",
-      transition: { duration: 0.2 }
+      transition: { duration: 0.2 },
     },
     tap: {
-      scale: 0.95
-    }
+      scale: 0.95,
+    },
   };
 
   const tableVariants = {
@@ -125,12 +52,12 @@ const HistoryTable = ({ charts, onViewChart }) => {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="overflow-x-auto px-4 sm:px-6 mx-auto max-w-4xl"
       variants={containerVariants}
       initial="hidden"
@@ -155,14 +82,17 @@ const HistoryTable = ({ charts, onViewChart }) => {
         initial="hidden"
         animate="visible"
       >
-        <div className="overflow-x-auto scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+        <div
+          className="overflow-x-auto scrollbar-hide"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           <style jsx>{`
             div::-webkit-scrollbar {
               display: none;
             }
           `}</style>
           <table className="min-w-full bg-transparent border-collapse">
-            <motion.thead 
+            <motion.thead
               className="bg-gradient-to-r from-[#228B22] to-[#32CD32]"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -182,8 +112,8 @@ const HistoryTable = ({ charts, onViewChart }) => {
             </motion.thead>
             <tbody>
               {charts.map((chart, index) => (
-                <motion.tr 
-                  key={chart._id} 
+                <motion.tr
+                  key={chart._id}
                   className="text-center border-b border-[#90EE90] hover:bg-[#f0f8f0] transition-colors duration-200"
                   variants={rowVariants}
                   whileHover="hover"
