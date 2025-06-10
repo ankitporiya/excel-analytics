@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
   const authHeader = req.header('Authorization');
-  console.log('🚀 Received Authorization header:', authHeader); // ✅ Log
+  // console.log('🚀 Received Authorization header:', authHeader); // ✅ Log
 
   if (!authHeader) return res.status(401).json({ msg: 'No token provided' });
 
@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('✅ Decoded JWT:', decoded); // ✅ Log
+    // console.log('✅ Decoded JWT:', decoded); // ✅ Log
     req.user = decoded;
     next();
   } catch (err) {
