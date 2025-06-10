@@ -25,9 +25,6 @@ router.delete('/files/:fileId', auth, isAdmin, adminController.deleteFile);
 // Storage usage
 router.get('/storage', auth, isAdmin, adminController.getStorageUsage);
 
-
-///////////////////////////////////////////
-// Chart management
 // Chart statistics route
 router.get('/charts/stats', auth, isAdmin, adminController.getChartStats);
 
@@ -42,11 +39,6 @@ router.delete('/charts/:chartId', auth, isAdmin, adminController.deleteChart);
 
 // Bulk delete charts
 router.delete('/charts', auth, isAdmin, adminController.bulkDeleteCharts);
-
-// Export chart data (for backup purposes)
-// router.get('/charts/export', auth, isAdmin, adminController.exportCharts);
-
-
 
 // Get chart analytics dashboard
 router.get('/dashboard', auth, isAdmin, adminController.getDashboardOverview);
