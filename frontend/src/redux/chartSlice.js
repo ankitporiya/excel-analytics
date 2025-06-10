@@ -15,7 +15,7 @@ export const createChart = createAsyncThunk(
   "charts/create",
   async (chartData, { rejectWithValue }) => {
     try {
-      console.log("Creating chart with data:", chartData);
+      // console.log("Creating chart with data:", chartData);
 
       const response = await fetch("http://localhost:5000/api/charts", {
         method: "POST",
@@ -29,7 +29,7 @@ export const createChart = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log("Chart created successfully:", data);
+      // console.log("Chart created successfully:", data);
       return data;
     } catch (error) {
       console.error("Chart creation error:", error);

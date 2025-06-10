@@ -86,7 +86,7 @@ const HistoryTable = ({ charts, onViewChart }) => {
           className="overflow-x-auto scrollbar-hide"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <style jsx>{`
+          <style>{`
             div::-webkit-scrollbar {
               display: none;
             }

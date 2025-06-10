@@ -15,7 +15,7 @@ export const uploadFile = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      console.log("Sending token:", token); // ✅ Debug log
+      // console.log("Sending token:", token); // ✅ Debug log
 
       const response = await fetch("http://localhost:5000/api/files/upload", {
         method: "POST",

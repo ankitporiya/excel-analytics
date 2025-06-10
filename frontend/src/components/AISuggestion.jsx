@@ -524,7 +524,7 @@ const AIsuggestion = ({
 
         if (response.ok) {
           const data = await response.json();
-          console.log(`✅ Success with model: ${model}`);
+          // console.log(`✅ Success with model: ${model}`);
           return data.candidates[0]?.content?.parts[0]?.text || "";
         } else {
           console.warn(
