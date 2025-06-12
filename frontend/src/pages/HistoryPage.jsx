@@ -5,7 +5,7 @@ import { getUserCharts } from "../redux/chartSlice";
 import HistoryTable from "../components/HistoryTable";
 import ChartDisplay from "../components/ChartDisplay";
 import { motion } from "framer-motion";
-
+import jsPDF from "jspdf";
 const HistoryPage = () => {
   const dispatch = useDispatch();
   const { charts } = useSelector((state) => state.charts);
@@ -28,7 +28,9 @@ const HistoryPage = () => {
         alert("Chart canvas not found! Make sure the chart is fully loaded.");
         return;
       }
-
+      const fileName = `${selectedChart?.chartName || "chart"}-${
+        new Date().toISOString().split("T")[0]
+      }`;
       const link = document.createElement("a");
       link.download = `${selectedChart?.chartName || "chart"}-${
         new Date().toISOString().split("T")[0]
@@ -38,8 +40,18 @@ const HistoryPage = () => {
         link.href = canvas.toDataURL("image/png");
       } else if (format === "jpeg") {
         link.href = canvas.toDataURL("image/jpeg", 0.9);
-      }
+      } else if (format === "pdf") {
+        const imageData = canvas.toDataURL("image/png");
 
+        const pdf = new jsPDF({
+          orientation: "landscape",
+          unit: "px",
+          format: [canvas.width, canvas.height],
+        });
+
+        pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
+        pdf.save(`${fileName}.pdf`);
+      }
       link.click();
     } catch (error) {
       console.error("Download failed:", error);
@@ -118,6 +130,17 @@ const HistoryPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
+              <motion.button
+                onClick={() => downloadChart("pdf")}
+                className="px-6 py-2 bg-[#228B22] text-white rounded-lg hover:bg-[#32CD32] focus:bg-[#32CD32] focus:outline-none focus:ring-2 focus:ring-[#90EE90] transition-colors flex items-center justify-center space-x-2"
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <span>📥</span>
+                <span>Download PDF</span>
+              </motion.button>
+
               <motion.button
                 onClick={() => downloadChart("png")}
                 className="px-6 py-2 bg-[#228B22] text-white rounded-lg hover:bg-[#32CD32] focus:bg-[#32CD32] focus:outline-none focus:ring-2 focus:ring-[#90EE90] transition-colors flex items-center justify-center space-x-2"

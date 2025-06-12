@@ -180,6 +180,7 @@ import { loginSuccess } from "./redux/userSlice"; // Import your action creator 
 
 import FileUpload from "./components/FileUpload";
 import ChartPage from "./pages/ChartPage";
+import ChartPage3D from "./pages/ChartPage3D";
 import HistoryPage from "./pages/HistoryPage";
 
 function App() {
@@ -274,6 +275,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ChartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/charts3d"
+            element={
+              <ProtectedRoute>
+                <ChartPage3D />
               </ProtectedRoute>
             }
           />

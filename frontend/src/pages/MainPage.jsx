@@ -233,6 +233,102 @@ const MainPage = () => {
             </div>
           </motion.div>
 
+
+
+
+
+
+
+
+
+
+
+{/* ///////////////////////////////////// */}
+
+<motion.div
+            className="bg-white rounded-lg shadow-lg p-6"
+            style={{ backgroundColor: "#f0f8f0" }}
+            variants={cardVariants}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 10px 25px rgba(34, 139, 34, 0.1)",
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-center">
+              <motion.div
+                className="text-4xl mb-4"
+                animate={{
+                  y: [0, -5, 0],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                }}
+              >
+                📈
+              </motion.div>
+              <h3
+                className="text-xl font-semibold mb-2"
+                style={{ color: "#228B22" }}
+              >
+                Create 3D Charts
+              </h3>
+              <p className="mb-4" style={{ color: "#228B22" }}>
+                Visualize your data with interactive charts
+              </p>
+              <motion.button
+                onClick={() => navigate("/charts3d")}
+                className="w-full py-2 px-4 rounded-lg font-semibold border-2 transition-colors duration-300"
+                style={{ borderColor: "#228B22", color: "#228B22" }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = "#228B22";
+                  e.target.style.color = "#f0f8f0";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "transparent";
+                  e.target.style.color = "#228B22";
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                Create 3D Chart
+              </motion.button>
+            </div>
+          </motion.div>
+
+
+
+
+
+
+
+{/* //////////////////// */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           {/* Analysis History Card */}
           <motion.div
             className="bg-white rounded-lg shadow-lg p-6"

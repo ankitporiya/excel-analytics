@@ -8,7 +8,7 @@ import { createChart } from "../redux/chartSlice";
 import ChartDisplay from "../components/ChartDisplay";
 import AIsuggestion from "../components/AISuggestion";
 import { useNavigate } from "react-router-dom";
-
+import jsPDF from "jspdf";
 const ChartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const ChartPage = () => {
     { value: "line", label: "Line Chart", icon: "📈" },
     { value: "pie", label: "Pie Chart", icon: "🥧" },
     { value: "scatter", label: "Scatter Plot", icon: "⚡" },
-    { value: "column3d", label: "3D Column Chart", icon: "📈" },
+    // { value: "column3d", label: "3D Column Chart", icon: "📈" },
   ];
 
   const handleFileSelection = (e) => {
@@ -138,7 +138,9 @@ const ChartPage = () => {
         alert("Chart canvas not found! Make sure the chart is fully loaded.");
         return;
       }
-
+      const fileName = `${chartConfig?.chartName || "chart"}-${
+        new Date().toISOString().split("T")[0]
+      }`;
       // Create download link
       const link = document.createElement("a");
       link.download = `${chartConfig.chartName || "chart"}-${
@@ -149,8 +151,18 @@ const ChartPage = () => {
         link.href = canvas.toDataURL("image/png");
       } else if (format === "jpeg") {
         link.href = canvas.toDataURL("image/jpeg", 0.9);
-      }
+      } else if (format === "pdf") {
+        const imageData = canvas.toDataURL("image/png");
 
+        const pdf = new jsPDF({
+          orientation: "landscape",
+          unit: "px",
+          format: [canvas.width, canvas.height],
+        });
+
+        pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
+        pdf.save(`${fileName}.pdf`);
+      }
       link.click();
     } catch (error) {
       console.error("Download failed:", error);
@@ -550,6 +562,17 @@ const ChartPage = () => {
                   </div>
 
                   <div className="mt-6 flex justify-center flex-wrap gap-2 sm:gap-4">
+                    <motion.button
+                      onClick={() => downloadChart("pdf")}
+                      className="px-4 sm:px-6 py-2 bg-[#228B22] text-white rounded-lg hover:bg-[#32CD32] transition-colors flex items-center space-x-2 text-sm sm:text-base"
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                    >
+                      <span>📄</span>
+                      <span>Download PDF</span>
+                    </motion.button>
+
                     <motion.button
                       onClick={() => downloadChart("png")}
                       className="px-4 sm:px-6 py-2 bg-[#228B22] text-white rounded-lg hover:bg-[#32CD32] transition-colors flex items-center space-x-2 text-sm sm:text-base"
