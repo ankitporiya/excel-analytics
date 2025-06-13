@@ -118,7 +118,7 @@ const MainPage = () => {
       {/* Main Content */}
       <main className="container mx-auto my-center px-4 py-8">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -207,7 +207,7 @@ const MainPage = () => {
                 className="text-xl font-semibold mb-2"
                 style={{ color: "#228B22" }}
               >
-                Create Charts
+                Create 2D Charts
               </h3>
               <p className="mb-4" style={{ color: "#228B22" }}>
                 Visualize your data with interactive charts
@@ -228,7 +228,7 @@ const MainPage = () => {
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.2 }}
               >
-                Create Chart
+                Create 2D Chart
               </motion.button>
             </div>
           </motion.div>

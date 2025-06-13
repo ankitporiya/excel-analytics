@@ -888,7 +888,7 @@ Keep the analysis concise and focused (3-4 sentences maximum).
                                 {suggestion.chartType === "column3d" && "📈"}
                               </motion.span>
                               <span className="font-semibold text-[#228B22] text-base sm:text-lg capitalize">
-                                {suggestion.chartType} Chart
+                                {suggestion.chartType}
                               </span>
                               <motion.span
                                 className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
