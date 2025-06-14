@@ -9,7 +9,12 @@ const ChartDistributionPie = ({ stats }) => {
       'line': '📈',
       'pie': '🥧',
       'scatter': '⚪',
-      '3D colums': '📉',
+      'column3d': "📊",
+      'surface3d':"🌐",
+      'bar3d': "📊",
+      'line3d':"📈",
+      'scatter3d':"⚡",
+      'pie3d':"🥧"
       
     };
     return icons[type] || '📊';
@@ -71,7 +76,7 @@ const ChartDistributionPie = ({ stats }) => {
             />
             <span className="text-sm flex items-center gap-1" style={{ color: '#819fa7' }}>
               <span>{pieData[index]?.icon}</span>
-              {entry.value}
+              {entry.value?.toUpperCase().replace(/3D$/, " 3D")}
             </span>
           </div>
         ))}

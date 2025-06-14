@@ -936,7 +936,7 @@ Keep the analysis concise and focused (3-4 sentences maximum).
                             }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Use This
+                            Apply 2D Chart
                           </motion.button>
                         </div>
                       </div>

@@ -153,7 +153,7 @@ const ChartAnalysis = () => {
       setSelectedCharts((prev) => [...new Set([...prev, ...currentChartIds])]);
     }
   };
-
+ 
   const getChartTypeIcon = (type) => {
     const icons = {
       bar: "📊",
@@ -161,6 +161,11 @@ const ChartAnalysis = () => {
       pie: "🥧",
       scatter: "🔸",
       column3d: "📊",
+      surface3d:"🌐",
+      bar3d: "📊",
+      line3d:"📈",
+      scatter3d:"⚡",
+      pie3d:"🥧"
     };
     return icons[type] || "📊";
   };
@@ -411,7 +416,13 @@ const ChartAnalysis = () => {
                 <option value="line">Line Chart</option>
                 <option value="pie">Pie Chart</option>
                 <option value="scatter">Scatter Plot</option>
-                <option value="column3d">3D Column</option>
+                <option value="surface3d">Surface 3D</option>
+                <option value="bar3d">Bar 3D</option>
+                <option value="line3d">Line 3D</option>
+                <option value="scatter3d">Scatter 3D</option>
+                <option value="column3d">Column 3D</option>
+                <option value="pie3d">Pie 3D</option>
+               
               </select>
               <select
                 value={`${filters.sortBy}-${filters.sortOrder}`}
@@ -541,6 +552,7 @@ const ChartAnalysis = () => {
                         </div>
                         <div className="text-xs" style={{ color: "#819fa7" }}>
                           X: {chart.xAxis}, Y: {chart.yAxis}
+                          {chart.zAxis && `, Z: ${chart.zAxis}`}
                         </div>
                       </td>
                       <td className="py-3 px-2">
@@ -552,7 +564,7 @@ const ChartAnalysis = () => {
                             className="text-sm"
                             style={{ color: "#819fa7" }}
                           >
-                            {chart.chartType}
+                            {chart.chartType?.toUpperCase().replace(/3D$/, " 3D")}
                           </span>
                         </div>
                       </td>
@@ -775,6 +787,9 @@ const ChartAnalysis = () => {
                 { label: "Chart Type", value: selectedChart.chartType },
                 { label: "X-Axis", value: selectedChart.xAxis },
                 { label: "Y-Axis", value: selectedChart.yAxis },
+                ...(selectedChart.zAxis
+                  ? [{ label: "Z-Axis", value: selectedChart.zAxis }]
+                  : []),
                 {
                   label: "Created By",
                   value: selectedChart.userId?.name || "N/A",

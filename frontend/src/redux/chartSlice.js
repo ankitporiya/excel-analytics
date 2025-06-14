@@ -43,16 +43,18 @@ export const getUserCharts = createAsyncThunk(
   "charts/getUserCharts",
   async (_, { rejectWithValue }) => {
     try {
+      // console.log("Z test",_)
       const response = await fetch("http://localhost:5000/api/charts", {
         headers: getAuthHeaders(),
       });
-
+// console.log("Fetch response:", response);
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData.message || "Failed to fetch charts");
       }
 
       const data = await response.json();
+      // console.log("Fetched chart data:", data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch charts");
@@ -65,19 +67,22 @@ export const getChart = createAsyncThunk(
   "charts/getChart",
   async (chartId, { rejectWithValue }) => {
     try {
+      console.log("Fetching chart with ID:", chartId);
       const response = await fetch(
         `http://localhost:5000/api/charts/${chartId}`,
         {
           headers: getAuthHeaders(),
         }
       );
-
+  // console.log("Fetch response:", response);
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData.message || "Failed to fetch chart");
       }
 
       const data = await response.json();
+    
+      console.log("Fetched chart data:", data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch chart");

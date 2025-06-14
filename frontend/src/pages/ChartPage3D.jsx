@@ -1493,7 +1493,7 @@ const download3DChart = async (format = "png") => {
                       whileHover="hover"
                       whileTap="tap"
                     >
-                      Hide Panel
+                      Hide Panel Completely
                     </motion.button>
                   </div>
                   <AIsuggestion3D
