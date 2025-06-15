@@ -182,6 +182,7 @@ import FileUpload from "./components/FileUpload";
 import ChartPage from "./pages/ChartPage";
 import ChartPage3D from "./pages/ChartPage3D";
 import HistoryPage from "./pages/HistoryPage";
+import MyUploads from "./components/MyUploads";
 
 function App() {
   const dispatch = useDispatch();
@@ -291,6 +292,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <HistoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/myuploads"
+            element={
+              <ProtectedRoute>
+                <MyUploads />
               </ProtectedRoute>
             }
           />

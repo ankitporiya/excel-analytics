@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getStorageUsage } from "../utils/adminApi";
 import FileDistributionChart from "../components/FileDistributionChart";
-
+import { RefreshCw } from "lucide-react";
 const StorageDisplay = () => {
   const [storageData, setStorageData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -481,7 +481,7 @@ const StorageDisplay = () => {
                 {/* Action Button */}
                 <motion.button
                   onClick={fetchStorageUsage}
-                  className="w-full px-4 py-2 rounded-lg font-semibold transition-all duration-300"
+                  className="w-full px-4 py-2 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2"
                   style={{
                     backgroundColor: "#228B22",
                     color: "#f0f8f0",
@@ -493,7 +493,8 @@ const StorageDisplay = () => {
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400 }}
                 >
-                  Refresh Storage Data
+                  <span>Refresh Storage Data</span>
+                  <RefreshCw className="w-5 h-5" />
                 </motion.button>
               </motion.div>
             </motion.div>

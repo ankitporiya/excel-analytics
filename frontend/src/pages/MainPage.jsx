@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { motion } from "framer-motion";
 
+import { LogOut } from "lucide-react";
 const MainPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -108,7 +109,10 @@ const MainPage = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                Logout
+                <div className="flex items-center space-x-2">
+                  <span>Logout</span>
+                  <LogOut className="w-5 h-5" />
+                </div>
               </motion.button>
             </div>
           </div>
@@ -118,7 +122,7 @@ const MainPage = () => {
       {/* Main Content */}
       <main className="container mx-auto my-center px-4 py-8">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -173,6 +177,61 @@ const MainPage = () => {
                 transition={{ duration: 0.2 }}
               >
                 Upload File
+              </motion.button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="bg-white rounded-lg shadow-lg p-6"
+            style={{ backgroundColor: "#f0f8f0" }}
+            variants={cardVariants}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 10px 25px rgba(34, 139, 34, 0.1)",
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="text-center">
+              <motion.div
+                className="text-4xl mb-4"
+                animate={{
+                  y: [0, -5, 0],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                }}
+              >
+                📁
+              </motion.div>
+              <h3
+                className="text-xl font-semibold mb-2"
+                style={{ color: "#228B22" }}
+              >
+                My Uploads
+              </h3>
+              <p className="mb-4" style={{ color: "#228B22" }}>
+                Quickly Preview the Excel Uploads
+              </p>
+              <motion.button
+                onClick={() => navigate("/myuploads")}
+                className="w-full py-2 px-4 rounded-lg font-semibold border-2 transition-colors duration-300"
+                style={{ borderColor: "#228B22", color: "#228B22" }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = "#228B22";
+                  e.target.style.color = "#f0f8f0";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "transparent";
+                  e.target.style.color = "#228B22";
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                My Uploads
               </motion.button>
             </div>
           </motion.div>
@@ -233,19 +292,9 @@ const MainPage = () => {
             </div>
           </motion.div>
 
+          {/* ///////////////////////////////////// */}
 
-
-
-
-
-
-
-
-
-
-{/* ///////////////////////////////////// */}
-
-<motion.div
+          <motion.div
             className="bg-white rounded-lg shadow-lg p-6"
             style={{ backgroundColor: "#f0f8f0" }}
             variants={cardVariants}
@@ -268,7 +317,7 @@ const MainPage = () => {
                   repeatDelay: 2,
                 }}
               >
-                📈
+                ⚡
               </motion.div>
               <h3
                 className="text-xl font-semibold mb-2"
@@ -300,34 +349,7 @@ const MainPage = () => {
             </div>
           </motion.div>
 
-
-
-
-
-
-
-{/* //////////////////// */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          {/* //////////////////// */}
 
           {/* Analysis History Card */}
           <motion.div
@@ -361,7 +383,7 @@ const MainPage = () => {
                 Analysis History
               </h3>
               <p className="mb-4" style={{ color: "#228B22" }}>
-                View your previous analyses
+                View Your Previous Analyses History
               </p>
               <motion.button
                 onClick={() => navigate("/history")}

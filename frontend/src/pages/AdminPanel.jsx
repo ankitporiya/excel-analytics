@@ -12,7 +12,7 @@ import FileListModal from "../components/FileListModal";
 import StorageModal from "../components/StorageModal";
 import StorageDisplay from "../components/StorageDisplay";
 import ChartAnalysis from "../components/ChartAnalysis";
-
+import { LogOut } from "lucide-react";
 const AdminPanel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -155,7 +155,10 @@ const AdminPanel = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                Logout
+                <div className="flex items-center space-x-2">
+                                  <span>Logout</span>
+                                  <LogOut className="w-5 h-5" />
+                                </div>
               </motion.button>
             </div>
           </div>

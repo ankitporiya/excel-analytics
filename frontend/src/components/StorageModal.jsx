@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getStorageUsage } from "../utils/adminApi";
-
+import { RefreshCw } from 'lucide-react';
 const StorageModal = ({ isOpen, onClose }) => {
   const [storageData, setStorageData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -357,10 +357,10 @@ const StorageModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Refresh Button */}
-              <div className="text-center">
+              <div className="flex justify-center items-center">
                 <button
                   onClick={fetchStorageUsage}
-                  className="px-6 py-2 rounded-lg font-semibold transition-colors duration-300"
+                  className="flex items-center px-6 py-2 rounded-lg font-semibold transition-colors duration-300"
                   style={{
                     backgroundColor: "#228B22",
                     color: "#f0f8f0",
@@ -372,7 +372,7 @@ const StorageModal = ({ isOpen, onClose }) => {
                     (e.target.style.backgroundColor = "#228B22")
                   }
                 >
-                  Refresh Storage Info
+                  <RefreshCw className="w-5 h-5" />  <span> Referesh</span>
                 </button>
               </div>
             </div>
