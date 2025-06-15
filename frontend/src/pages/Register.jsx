@@ -310,7 +310,7 @@ export default RegisterPage;
 //   const handleRegister = async (e) => {
 //     e.preventDefault();
 //     try {
-//       const res = await fetch('http://localhost:5000/api/register', {
+//       const res = await fetch('https://excel-analytics-n9he.onrender.com/api/register', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify(form),
