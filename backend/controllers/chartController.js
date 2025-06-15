@@ -159,6 +159,7 @@
 /////////////////////////////////////////////////////////
 const Chart = require('../models/Chart');
 const FileUpload = require('../models/FileUpload');
+const mongoose = require('mongoose');
 
 // Create a new chart
 const createChart = async (req, res) => {
@@ -335,8 +336,55 @@ const generateColors = (count) => {
   return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
 };
 
+const deleteChart = async (req, res) => {
+  try {
+    const { chartId } = req.params;
+    const userId = req.user.id; // Assuming you have user authentication middleware
+
+    // Validate chartId
+    if (!chartId || !mongoose.Types.ObjectId.isValid(chartId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid chart ID provided'
+      });
+    }
+
+    // Find the chart and verify ownership
+    const chart = await Chart.findOne({ _id: chartId, userId: userId });
+    
+    if (!chart) {
+      return res.status(404).json({
+        success: false,
+        message: 'Chart not found or you do not have permission to delete this chart'
+      });
+    }
+
+    // Delete the chart
+    await Chart.findByIdAndDelete(chartId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Chart deleted successfully',
+      deletedChart: {
+        id: chart._id,
+        chartName: chart.chartName,
+        chartType: chart.chartType
+      }
+    });
+
+  } catch (error) {
+    console.error('Error deleting chart:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while deleting chart',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
 module.exports = {
   createChart,
   getUserCharts,
-  getChart
+  getChart,
+  deleteChart
 };

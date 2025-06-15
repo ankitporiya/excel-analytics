@@ -202,6 +202,10 @@ const HistoryPage = () => {
   useEffect(() => {
     dispatch(getUserCharts());
   }, [dispatch]);
+// Inside HistoryPage component
+const refreshCharts = () => {
+  dispatch(getUserCharts());
+};
 
   // Function to determine if chart type is 3D
   const is3DChart = (chartType) => {
@@ -517,7 +521,7 @@ const downloadFromCanvas = async (canvas, fileName, format) => {
         variants={itemVariants}
       >
         <motion.div className="flex-1" variants={itemVariants}>
-          <HistoryTable charts={charts} onViewChart={setSelectedChart} />
+          <HistoryTable charts={charts} onViewChart={setSelectedChart} onDeleteSuccess={refreshCharts} />
         </motion.div>
 
         <motion.div className="flex-1" variants={itemVariants}>

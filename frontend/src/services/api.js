@@ -53,7 +53,20 @@ class ApiService {
             method: 'GET',
         });
     }
+
+    async deleteChart(chartId) {
+        if (!chartId) {
+            throw new Error('Chart ID is required for deletion');
+        }
+
+        return this.request(`/charts/delete/${chartId}`, {
+            method: 'DELETE',
+        });
+    }
 }
 
 const apiService = new ApiService();
+
+
+export const deleteChart = (chartId) => apiService.deleteChart(chartId);
 export default apiService;

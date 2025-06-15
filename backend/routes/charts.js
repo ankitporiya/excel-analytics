@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-const { createChart, getUserCharts, getChart } = require('../controllers/chartController');
+const { createChart, getUserCharts, getChart,deleteChart } = require('../controllers/chartController');
 
 // Create new chart
 router.post('/', auth, createChart);
@@ -11,5 +11,5 @@ router.get('/', auth, getUserCharts);
 
 // Get specific chart
 router.get('/:chartId', auth, getChart);
-
+router.delete('/delete/:chartId', auth, deleteChart);
 module.exports = router;
