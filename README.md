@@ -54,7 +54,7 @@ cd frontend
 npm start
 13.	Access the Application
 o	Frontend: http://localhost:3000
-o	Backend API: https://excel-analytics-n9he.onrender.com
+o	Backend API: http://localhost:5000
 📱 Usage
 1.	Register a new account or login
 2.	Upload your Excel/CSV files

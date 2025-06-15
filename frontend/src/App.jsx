@@ -190,7 +190,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("https://excel-analytics-n9he.onrender.com/api/me", {
+      fetch("http://localhost:5000/api/me", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
