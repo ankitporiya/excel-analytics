@@ -596,7 +596,7 @@ Format your response as JSON:
 {
   "recommendations": [
     {
-      "chartType": "bar|line|pie|scatter|column3d",
+      "chartType": "bar|line|pie|scatter",
       "xAxis": "column_name",
       "yAxis": "column_name", 
       "reason": "explanation",
@@ -885,7 +885,7 @@ Keep the analysis concise and focused (3-4 sentences maximum).
                                 {suggestion.chartType === "line" && "📈"}
                                 {suggestion.chartType === "pie" && "🥧"}
                                 {suggestion.chartType === "scatter" && "⚡"}
-                                {suggestion.chartType === "column3d" && "📈"}
+                                {/* {suggestion.chartType === "column3d" && "📈"} */}
                               </motion.span>
                               <span className="font-semibold text-[#228B22] text-base sm:text-lg capitalize">
                                 {suggestion.chartType}

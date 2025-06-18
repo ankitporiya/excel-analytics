@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { motion } from "framer-motion";
-
+import ExcelAnalyticsLanding from "../components/ExcelAnalyticsLanding";
 import { LogOut } from "lucide-react";
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -407,83 +407,8 @@ const MainPage = () => {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-6 sm:p-8 mt-10 space-y-6"
-          style={{ backgroundColor: "#f8fff8" }}
-          variants={welcomeVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.h1
-            className="text-2xl sm:text-3xl font-bold text-center"
-            style={{ color: "#228B22" }}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
-            Welcome to Excel Analytics Platform
-          </motion.h1>
-          <motion.p
-            className="text-base sm:text-lg text-center px-2"
-            style={{ color: "#2d5a3d" }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            Unlock insights from your Excel files with powerful data
-            visualization and analytics tools.
-          </motion.p>
-
-          <motion.div
-            className="space-y-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-          >
-            <h2
-              className="text-xl sm:text-2xl font-semibold"
-              style={{ color: "#228B22" }}
-            >
-              📈 What You Can Do
-            </h2>
-            <motion.ul
-              className="list-disc list-inside space-y-2 text-sm sm:text-base"
-              style={{ color: "#2d5a3d" }}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.li variants={cardVariants}>
-                🔐 <strong>Secure Login:</strong> Register and access your
-                personalized dashboard.
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                📤 <strong>Upload Excel Files:</strong> Easily upload{" "}
-                <code className="bg-green-100 px-1 rounded">.xls</code> or{" "}
-                <code className="bg-green-100 px-1 rounded">.xlsx</code> files.
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                📊 <strong>Visualize Data:</strong> Generate interactive 2D & 3D
-                charts.
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                ⚙️ <strong>Dynamic Axes Selection:</strong> Choose columns as X
-                & Y axes on the fly.
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                🧠 <strong>Smart Insights (AI):</strong> Get automated summaries
-                and suggestions (optional).
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                🕓 <strong>Track History:</strong> View all your uploads and
-                analysis history.
-              </motion.li>
-              <motion.li variants={cardVariants}>
-                📥 <strong>Download Charts:</strong> Export charts as PNG or
-                PDF.
-              </motion.li>
-            </motion.ul>
-          </motion.div>
-        </motion.div>
+  
+        <ExcelAnalyticsLanding></ExcelAnalyticsLanding>
       </main>
     </div>
   );

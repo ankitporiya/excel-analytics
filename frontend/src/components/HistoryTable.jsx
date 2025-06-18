@@ -382,7 +382,8 @@ const HistoryTable = ({ charts, onViewChart, onDeleteChart, onDeleteSuccess,load
                       {chart.chartName}
                     </td>
                     <td className="border border-[#90EE90] px-3 sm:px-4 py-3 text-gray-800 text-sm sm:text-base">
-                      {chart.chartType}
+                      {chart.chartType?.toUpperCase().replace(/3D$/, ' 3D')}
+
                     </td>
                     <td className="border border-[#90EE90] px-3 sm:px-4 py-3">
                       <motion.button
