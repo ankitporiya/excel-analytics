@@ -5,4 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: './', // ✅ Ensures relative asset paths work in production (Netlify)
+    build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
+  }
+
 })
