@@ -11,7 +11,10 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-
+// ✅ Add this health check route here
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
 // Routes
 const authRoutes = require('./routes/auth');
 app.use('/api', authRoutes);
