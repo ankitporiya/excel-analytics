@@ -189,7 +189,7 @@ Available Chart Types:
 2. Line Chart - Good for trends over time
 3. Pie Chart - Good for showing parts of a whole
 4. Scatter Plot - Good for showing relationships between variables
-5. 3D Column Chart - Good for enhanced visual impact of comparisons
+
 
 Please provide:
 1. Top 3 recommended chart types with reasons
