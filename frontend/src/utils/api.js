@@ -1,6 +1,7 @@
 // utils/api.js
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://excel-analytics-fn25.onrender.com/api";
+  import.meta.env.VITE_API_URL ||
+  "https://excel-analytics-fn25.onrender.com/api";
 
 const api = {
   // Generic fetch wrapper
@@ -26,8 +27,8 @@ const api = {
     };
 
     // Debug logs to inspect URL and headers
-    console.log("Sending request to:", url);
-    console.log("Request headers:", config.headers);
+    // console.log("Sending request to:", url);
+    // console.log("Request headers:", config.headers);
 
     try {
       const response = await fetch(url, config);

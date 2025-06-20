@@ -17,13 +17,16 @@ export const uploadFile = createAsyncThunk(
       const token = localStorage.getItem("token");
       // console.log("Sending token:", token); // ✅ Debug log
 
-      const response = await fetch("https://excel-analytics-fn25.onrender.com/api/files/upload", {
-        method: "POST",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "https://excel-analytics-fn25.onrender.com/api/files/upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -43,9 +46,12 @@ export const getUserFiles = createAsyncThunk(
   "files/getUserFiles",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("https://excel-analytics-fn25.onrender.com/api/files", {
-        headers: getAuthHeaders(),
-      });
+      const response = await fetch(
+        "https://excel-analytics-fn25.onrender.com/api/files",
+        {
+          headers: getAuthHeaders(),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

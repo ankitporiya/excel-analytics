@@ -17,11 +17,14 @@ export const createChart = createAsyncThunk(
     try {
       // console.log("Creating chart with data:", chartData);
 
-      const response = await fetch("https://excel-analytics-fn25.onrender.com/api/charts", {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(chartData),
-      });
+      const response = await fetch(
+        "https://excel-analytics-fn25.onrender.com/api/charts",
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(chartData),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -44,10 +47,13 @@ export const getUserCharts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // console.log("Z test",_)
-      const response = await fetch("https://excel-analytics-fn25.onrender.com/api/charts", {
-        headers: getAuthHeaders(),
-      });
-// console.log("Fetch response:", response);
+      const response = await fetch(
+        "https://excel-analytics-fn25.onrender.com/api/charts",
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      // console.log("Fetch response:", response);
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData.message || "Failed to fetch charts");
@@ -74,15 +80,15 @@ export const getChart = createAsyncThunk(
           headers: getAuthHeaders(),
         }
       );
-  // console.log("Fetch response:", response);
+      // console.log("Fetch response:", response);
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData.message || "Failed to fetch chart");
       }
 
       const data = await response.json();
-    
-      console.log("Fetched chart data:", data);
+
+      // console.log("Fetched chart data:", data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch chart");

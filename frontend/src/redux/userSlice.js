@@ -1,14 +1,14 @@
 // src/redux/userSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem("token"),
     user: null,
     isAuthenticated: false,
     loading: false,
-    error: null
+    error: null,
   },
   reducers: {
     loginStart: (state) => {
@@ -20,7 +20,7 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.token;
       state.user = action.payload.user;
-      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem("token", action.payload.token);
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -30,13 +30,14 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       state.user = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     },
     clearError: (state) => {
       state.error = null;
-    }
-  }
+    },
+  },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, clearError } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout, clearError } =
+  userSlice.actions;
 export default userSlice.reducer;

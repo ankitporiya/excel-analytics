@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getStorageUsage } from "../utils/adminApi";
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw } from "lucide-react";
 const StorageModal = ({ isOpen, onClose }) => {
   const [storageData, setStorageData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -372,7 +372,7 @@ const StorageModal = ({ isOpen, onClose }) => {
                     (e.target.style.backgroundColor = "#228B22")
                   }
                 >
-                  <RefreshCw className="w-5 h-5" />  <span> Referesh</span>
+                  <RefreshCw className="w-5 h-5" /> <span> Referesh</span>
                 </button>
               </div>
             </div>

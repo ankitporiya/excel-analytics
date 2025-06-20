@@ -1,5 +1,6 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://excel-analytics-fn25.onrender.com/api";
+  import.meta.env.VITE_API_URL ||
+  "https://excel-analytics-fn25.onrender.com/api";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

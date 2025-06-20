@@ -396,15 +396,15 @@ const deleteUser = async (req, res) => {
 
     // Delete user's charts
     const deletedCharts = await Chart.deleteMany({ userId });
-    console.log(
-      `Deleted ${deletedCharts.deletedCount} charts for user ${userId}`
-    );
+    // console.log(
+    //   `Deleted ${deletedCharts.deletedCount} charts for user ${userId}`
+    // );
 
     // Delete user's file records (no physical files to delete since data is stored in DB)
     const deletedFiles = await FileUpload.deleteMany({ userId });
-    console.log(
-      `Deleted ${deletedFiles.deletedCount} file records for user ${userId}`
-    );
+    // console.log(
+    //   `Deleted ${deletedFiles.deletedCount} file records for user ${userId}`
+    // );
 
     // Delete user
     await User.findByIdAndDelete(userId);
@@ -461,14 +461,11 @@ const deleteFile = async (req, res) => {
       return res.status(404).json({ message: "File not found" });
     }
 
-    // No physical file to delete - data is stored in MongoDB
-    // Remove all the filesystem operations since they don't apply
-
     // Delete charts associated with this file
     const deletedCharts = await Chart.deleteMany({ fileId });
-    console.log(
-      `Deleted ${deletedCharts.deletedCount} charts for file ${fileId}`
-    );
+    // console.log(
+    //   `Deleted ${deletedCharts.deletedCount} charts for file ${fileId}`
+    // );
 
     // Delete file record from database
     await FileUpload.findByIdAndDelete(fileId);

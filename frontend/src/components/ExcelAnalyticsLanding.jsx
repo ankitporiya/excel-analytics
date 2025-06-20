@@ -8,7 +8,7 @@ const ExcelAnalyticsLanding = () => {
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
   const ctaRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const featuresInView = useInView(featuresRef, { once: true });
   const ctaInView = useInView(ctaRef, { once: true });
@@ -17,17 +17,17 @@ const ExcelAnalyticsLanding = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
+    window.addEventListener("resize", checkMobile);
+
     // Cycle through features for mobile
     const interval = setInterval(() => {
-      setCurrentFeature(prev => (prev + 1) % 6);
+      setCurrentFeature((prev) => (prev + 1) % 6);
     }, 3000);
-    
+
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener("resize", checkMobile);
       clearInterval(interval);
     };
   }, []);
@@ -37,38 +37,38 @@ const ExcelAnalyticsLanding = () => {
       icon: "📤",
       title: "Upload Excel Files",
       description: "Drag & drop Excel files instantly",
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-blue-600",
     },
     {
       icon: "📊",
       title: "Visualize Data",
       description: "Create stunning charts automatically",
-      color: "from-purple-500 to-purple-600"
+      color: "from-purple-500 to-purple-600",
     },
     {
       icon: "⚙️",
       title: "Dynamic Axes",
       description: "Customize your data views",
-      color: "from-orange-500 to-orange-600"
+      color: "from-orange-500 to-orange-600",
     },
     {
       icon: "🧠",
       title: "AI Insights",
       description: "Get intelligent recommendations",
-      color: "from-pink-500 to-pink-600"
+      color: "from-pink-500 to-pink-600",
     },
     {
       icon: "🕓",
       title: "History Tracking",
       description: "Track all your analysis sessions",
-      color: "from-indigo-500 to-indigo-600"
+      color: "from-indigo-500 to-indigo-600",
     },
     {
       icon: "📥",
       title: "Export Charts",
       description: "Save in multiple formats",
-      color: "from-teal-500 to-teal-600"
-    }
+      color: "from-teal-500 to-teal-600",
+    },
   ];
 
   // Animation variants
@@ -78,9 +78,9 @@ const ExcelAnalyticsLanding = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -91,12 +91,10 @@ const ExcelAnalyticsLanding = () => {
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 12
-      }
-    }
+        damping: 12,
+      },
+    },
   };
-
-
 
   const scaleHover = {
     scale: 1.05,
@@ -104,8 +102,8 @@ const ExcelAnalyticsLanding = () => {
     transition: {
       type: "spring",
       stiffness: 300,
-      damping: 20
-    }
+      damping: 20,
+    },
   };
 
   const tapEffect = {
@@ -113,14 +111,14 @@ const ExcelAnalyticsLanding = () => {
     transition: {
       type: "spring",
       stiffness: 400,
-      damping: 17
-    }
+      damping: 17,
+    },
   };
 
   return (
     <div className="min-h-screen overflow-hidden bg-transparent">
       {/* Animated Background Elements */}
-      <motion.div 
+      <motion.div
         className="fixed inset-0 pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -148,34 +146,38 @@ const ExcelAnalyticsLanding = () => {
         ))}
       </motion.div>
 
-    
-      
       {/* Features Section */}
-      <section ref={featuresRef} className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <section
+        ref={featuresRef}
+        className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16"
+      >
         <motion.div
           className="text-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 50 }}
-          animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          animate={
+            featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+          }
           transition={{ duration: 0.8 }}
         >
-          <motion.h2 
-            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4" 
+          <motion.h2
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4"
             style={{ color: "#228B22" }}
             animate={{ scale: [1, 1.02, 1] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
             🚀 Powerful Features
           </motion.h2>
-          <motion.p 
-            className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto" 
+          <motion.p
+            className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto"
             style={{ color: "#2d5a3d" }}
           >
-            Everything you need to transform your Excel data into actionable insights
+            Everything you need to transform your Excel data into actionable
+            insights
           </motion.p>
         </motion.div>
 
         {/* Features Grid - Responsive */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 md:gap-4 lg:gap-6"
           variants={containerVariants}
           initial="hidden"
@@ -189,20 +191,19 @@ const ExcelAnalyticsLanding = () => {
               whileHover={scaleHover}
               whileTap={tapEffect}
             >
-              <motion.div 
+              <motion.div
                 className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-3xl flex items-center justify-center mb-4 shadow-lg"
                 style={{ backgroundColor: "#228B22" }}
-                
                 animate="animate"
                 whileHover={{
                   backgroundColor: "#1f4a1f",
                   boxShadow: "0 20px 40px rgba(34, 139, 34, 0.4)",
-                  transition: { duration: 0.3 }
+                  transition: { duration: 0.3 },
                 }}
               >
-                <motion.div 
+                <motion.div
                   className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.2,
                     rotate: [0, -10, 10, 0],
                   }}
@@ -211,16 +212,16 @@ const ExcelAnalyticsLanding = () => {
                   {feature.icon}
                 </motion.div>
               </motion.div>
-              
-              <motion.h3 
+
+              <motion.h3
                 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-center transition-colors duration-300"
                 style={{ color: "#228B22" }}
                 whileHover={{ color: "#16a34a", scale: 1.05 }}
               >
                 {feature.title}
               </motion.h3>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-xs sm:text-sm md:text-base text-gray-600 text-center mt-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                 initial={{ y: 10 }}
                 whileHover={{ y: 0 }}
@@ -231,12 +232,8 @@ const ExcelAnalyticsLanding = () => {
           ))}
         </motion.div>
       </section>
-
     </div>
   );
 };
 
 export default ExcelAnalyticsLanding;
-
-
-
